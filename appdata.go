@@ -1,7 +1,7 @@
 package main
 
 func loadVersion() string {
-	return "v0.1.0" //Version of app
+	return "v0.1" //Version of app
 }
 
 // type AppSize struct {

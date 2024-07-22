@@ -1,5 +1,4 @@
 test/
-.exe
-config.ini
 export/
 qtbox
+error_log.txt

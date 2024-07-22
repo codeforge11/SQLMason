@@ -39,7 +39,29 @@ type MainWindow struct {
 }
 
 func NewMainWindow() *MainWindow {
-	window := &MainWindow{QMainWindow: widgets.NewQMainWindow(nil, 0)}
+	window := &MainWindow{
+		QMainWindow:        widgets.NewQMainWindow(nil, 0),
+		db:                 &sql.DB{},
+		hostLabel:          &widgets.QLabel{},
+		portLabel:          &widgets.QLabel{},
+		userLabel:          &widgets.QLabel{},
+		passwordLabel:      &widgets.QLabel{},
+		hostInputField:     &widgets.QLineEdit{},
+		userInputField:     &widgets.QLineEdit{},
+		passwordInputField: &widgets.QLineEdit{},
+		portInputField:     &widgets.QLineEdit{},
+		connectButton:      &widgets.QPushButton{},
+		errorLabel:         &widgets.QLabel{},
+		sqlLabel:           &widgets.QLabel{},
+		sqlEntry:           &widgets.QTextEdit{},
+		executeButton:      &widgets.QPushButton{},
+		statusLabel:        &widgets.QLabel{},
+		resultLabel:        &widgets.QLabel{},
+		resultText:         &widgets.QTextEdit{},
+		messagesLabel:      &widgets.QLabel{},
+		messagesText:       &widgets.QTextEdit{},
+		exitButton:         &widgets.QPushButton{},
+	}
 
 	Appversion := loadVersion()
 
@@ -191,6 +213,7 @@ func (w *MainWindow) buttonClicked(_ bool) {
 		port, err = strconv.Atoi(portText)
 		if err != nil {
 			w.displayMessage(fmt.Sprintf("Invalid port: %s", err))
+			logError(err)
 			return
 		}
 	}
@@ -201,6 +224,7 @@ func (w *MainWindow) buttonClicked(_ bool) {
 	if err != nil {
 		w.displayMessage(fmt.Sprintf("Connection error: %s", err))
 		w.errorLabel.SetText(err.Error())
+		logError(err)
 		return
 	}
 
@@ -208,6 +232,7 @@ func (w *MainWindow) buttonClicked(_ bool) {
 	if err != nil {
 		w.displayMessage(fmt.Sprintf("Connection error: %s", err))
 		w.errorLabel.SetText(err.Error())
+		logError(err)
 		return
 	}
 
@@ -237,6 +262,7 @@ func (w *MainWindow) executeSQL(_ bool) {
 			rows, err := w.db.Query(sqlCode)
 			if err != nil {
 				w.displayMessage(fmt.Sprintf("SQL execution error: %s", err))
+				logError(err)
 				return
 			}
 			defer rows.Close()
@@ -257,6 +283,7 @@ func (w *MainWindow) displayResults(rows *sql.Rows) {
 	columns, err := rows.Columns()
 	if err != nil {
 		w.displayMessage(fmt.Sprintf("Error getting columns: %s", err))
+		logError(err)
 		return
 	}
 
@@ -272,6 +299,7 @@ func (w *MainWindow) displayResults(rows *sql.Rows) {
 		err := rows.Scan(scanArgs...)
 		if err != nil {
 			w.displayMessage(fmt.Sprintf("Error scanning row: %s", err))
+			logError(err)
 			return
 		}
 
