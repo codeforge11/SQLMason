@@ -1,17 +1,5 @@
 package main
 
 func loadVersion() string {
-	return "v0.1" //Version of app
+	return "v0.2" //Version of app
 }
-
-// type AppSize struct {
-// 	Width  float32
-// 	Height float32
-// }
-
-// func InputdatawindowsSize() AppSize {
-// 	return AppSize{
-// 		Width:  700,
-// 		Height: 400,
-// 	}
-// }
