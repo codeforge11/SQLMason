@@ -1,18 +1,18 @@
-# SQLForge
+# SQLMason
 
-SQLForge is a desktop application that allows you to easily manage databases.
+SQLMason is a desktop application that allows you to easily manage databases.
 
 ## Supported Operating Systems
 
 | OS      | Status |
 | ------- | :----: |
 | Windows |   ✅   |
-| macOS   |   ❌   |
+| macOS   |   🚧   |
 | Linux   |   🚧   |
 
 ## Installation
 
-SQLForge can be installed from [GitHub Releases](https://github.com/codeforge11/SQLForge/releases).
+SQLMason can be installed from [GitHub Releases](https://github.com/codeforge11/SQLMason/releases).
 
 ## Supported Databases
 

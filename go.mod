@@ -1,4 +1,4 @@
-module SQLForge
+module SQLMason
 
 go 1.22.5
 

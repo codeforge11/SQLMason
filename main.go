@@ -65,7 +65,7 @@ func NewMainWindow() *MainWindow {
 
 	Appversion := loadVersion()
 
-	window.SetWindowTitle(fmt.Sprintf("SQLForge %s\n", Appversion))
+	window.SetWindowTitle(fmt.Sprintf("SQLMason %s\n", Appversion))
 	window.SetGeometry(core.NewQRect4(0, 0, 800, 800))
 
 	window.SetWindowIcon(gui.NewQIcon5("Images/Logo.png"))
