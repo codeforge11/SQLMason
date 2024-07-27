@@ -1,8 +1,10 @@
 package main
 
 import (
+	appdata "SQLMason/files"
 	"database/sql"
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 
@@ -63,9 +65,7 @@ func NewMainWindow() *MainWindow {
 		exitButton:         &widgets.QPushButton{},
 	}
 
-	Appversion := loadVersion()
-
-	window.SetWindowTitle(fmt.Sprintf("SQLMason %s\n", Appversion))
+	window.SetWindowTitle(fmt.Sprintf("SQLMason %s\n", appdata.Version))
 	window.SetGeometry(core.NewQRect4(0, 0, 800, 800))
 
 	window.SetWindowIcon(gui.NewQIcon5("Images/Logo.png"))
@@ -340,7 +340,12 @@ func (w *MainWindow) exitDatabase(_ bool) {
 
 func main() {
 	app := widgets.NewQApplication(len([]string{}), []string{})
+
+	if core.QCoreApplication_Instance() == nil {
+		log.Fatal("Failed to initialize QCoreApplication")
+	}
 	mainWindow := NewMainWindow()
 	mainWindow.Show()
 	app.Exec()
+
 }
