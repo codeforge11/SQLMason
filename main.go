@@ -344,6 +344,9 @@ func main() {
 	if core.QCoreApplication_Instance() == nil {
 		log.Fatal("Failed to initialize QCoreApplication")
 	}
+
+	appdata.Theme(app)
+
 	mainWindow := NewMainWindow()
 	mainWindow.Show()
 	app.Exec()
