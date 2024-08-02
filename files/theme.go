@@ -4,31 +4,22 @@ import "github.com/therecipe/qt/widgets"
 
 func Theme(app *widgets.QApplication) {
 	app.SetStyleSheet(`
-
-        QMainWindow {
-            background-color: #5FAD41;
-            color: #000000; 
+        QLabel#titleLabel {
+            font-size: 24px;
+            color: black;
+            padding: 10px;
+            text-align: center;
         }
-        QLabel, QLineEdit, QTextEdit {
-            background-color: #5FAD41;
-            color: #000000;
-        }
-        QPushButton {
+        QPushButton#connecttodbButton{
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
             background-color: #3a86ff;
             color: white;
-            font-size: 14px;
+            font-size: 72px; 
+            padding: 40px; 
+            border: none;
+            border-radius: 10px; 
         }
-        QLineEdit, QTextEdit {
-            border: 1px solid #3a86ff;
-            padding: 5px;
-        }
-        QPushButton {
-            background-color: #3a86ff;
-            color: white;
-            font-size: 14px;
-        }
-
-
-
     `)
 }

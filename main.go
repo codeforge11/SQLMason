@@ -8,17 +8,19 @@ import (
 	"strconv"
 	"strings"
 
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type MainWindow struct {
 	*widgets.QMainWindow
 
-	db *sql.DB
-
+	db                 *sql.DB
+	connecttodbButton  *widgets.QPushButton
+	titleLabel         *widgets.QLabel
 	hostLabel          *widgets.QLabel
 	portLabel          *widgets.QLabel
 	userLabel          *widgets.QLabel
@@ -42,42 +44,51 @@ type MainWindow struct {
 
 func NewMainWindow() *MainWindow {
 	window := &MainWindow{
-		QMainWindow:        widgets.NewQMainWindow(nil, 0),
-		db:                 &sql.DB{},
-		hostLabel:          &widgets.QLabel{},
-		portLabel:          &widgets.QLabel{},
-		userLabel:          &widgets.QLabel{},
-		passwordLabel:      &widgets.QLabel{},
-		hostInputField:     &widgets.QLineEdit{},
-		userInputField:     &widgets.QLineEdit{},
-		passwordInputField: &widgets.QLineEdit{},
-		portInputField:     &widgets.QLineEdit{},
-		connectButton:      &widgets.QPushButton{},
-		errorLabel:         &widgets.QLabel{},
-		sqlLabel:           &widgets.QLabel{},
-		sqlEntry:           &widgets.QTextEdit{},
-		executeButton:      &widgets.QPushButton{},
-		statusLabel:        &widgets.QLabel{},
-		resultLabel:        &widgets.QLabel{},
-		resultText:         &widgets.QTextEdit{},
-		messagesLabel:      &widgets.QLabel{},
-		messagesText:       &widgets.QTextEdit{},
-		exitButton:         &widgets.QPushButton{},
+		QMainWindow: widgets.NewQMainWindow(nil, 0),
+		db:          &sql.DB{},
+
+		connecttodbButton:  widgets.NewQPushButton(nil),
+		titleLabel:         widgets.NewQLabel2(fmt.Sprintf("SQLMason %s", appdata.Version), nil, 0),
+		hostLabel:          widgets.NewQLabel(nil, 0),
+		portLabel:          widgets.NewQLabel(nil, 0),
+		userLabel:          widgets.NewQLabel(nil, 0),
+		passwordLabel:      widgets.NewQLabel(nil, 0),
+		hostInputField:     widgets.NewQLineEdit(nil),
+		userInputField:     widgets.NewQLineEdit(nil),
+		passwordInputField: widgets.NewQLineEdit(nil),
+		portInputField:     widgets.NewQLineEdit(nil),
+		connectButton:      widgets.NewQPushButton(nil),
+		errorLabel:         widgets.NewQLabel(nil, 0),
+		sqlLabel:           widgets.NewQLabel(nil, 0),
+		sqlEntry:           widgets.NewQTextEdit(nil),
+		executeButton:      widgets.NewQPushButton(nil),
+		statusLabel:        widgets.NewQLabel(nil, 0),
+		resultLabel:        widgets.NewQLabel(nil, 0),
+		resultText:         widgets.NewQTextEdit(nil),
+		messagesLabel:      widgets.NewQLabel(nil, 0),
+		messagesText:       widgets.NewQTextEdit(nil),
+		exitButton:         widgets.NewQPushButton(nil),
 	}
 
-	window.SetWindowTitle(fmt.Sprintf("SQLMason %s\n", appdata.Version))
+	window.SetWindowTitle(fmt.Sprintf("SQLMason %s", appdata.Version))
 	window.SetGeometry(core.NewQRect4(0, 0, 800, 800))
-
-	window.SetWindowIcon(gui.NewQIcon5("Images/Logo.png"))
+	window.SetWindowIcon(gui.NewQIcon5("Images/Logo.svg"))
 	window.SetFixedSize2(800, 800)
 
 	window.initUI()
-	window.hideElements()
+	window.firstrun()
 
 	return window
 }
 
 func (w *MainWindow) initUI() {
+
+	w.titleLabel.SetObjectName("titleLabel")
+
+	w.connecttodbButton.SetObjectName("connecttodbButton")
+	w.connecttodbButton = widgets.NewQPushButton2("Connect to DB", nil)
+	w.connecttodbButton.ConnectClicked(w.buttonClicked2)
+
 	w.hostLabel = widgets.NewQLabel2("Host:", nil, 0)
 	w.hostLabel.SetAlignment(core.Qt__AlignCenter)
 	w.hostLabel.SetFont(gui.NewQFont2("Arial", 12, 1, false))
@@ -94,17 +105,11 @@ func (w *MainWindow) initUI() {
 	w.passwordLabel.SetAlignment(core.Qt__AlignCenter)
 	w.passwordLabel.SetFont(gui.NewQFont2("Arial", 12, 1, false))
 
-	w.hostInputField = widgets.NewQLineEdit(nil)
 	w.hostInputField.SetFont(gui.NewQFont2("Arial", 16, 1, false))
 	w.hostInputField.SetPlaceholderText("localhost")
 
-	w.userInputField = widgets.NewQLineEdit(nil)
 	w.userInputField.SetFont(gui.NewQFont2("Arial", 16, 1, false))
-
-	w.passwordInputField = widgets.NewQLineEdit(nil)
 	w.passwordInputField.SetFont(gui.NewQFont2("Arial", 16, 1, false))
-
-	w.portInputField = widgets.NewQLineEdit(nil)
 	w.portInputField.SetFont(gui.NewQFont2("Arial", 16, 1, false))
 	w.portInputField.SetPlaceholderText("3306")
 
@@ -149,6 +154,9 @@ func (w *MainWindow) initUI() {
 
 	layout := widgets.NewQVBoxLayout()
 	layout.SetSpacing(10)
+
+	layout.AddWidget(w.titleLabel, 0, core.Qt__AlignTop|core.Qt__AlignCenter)
+	layout.AddWidget(w.connecttodbButton, 0, core.Qt__AlignCenter)
 	layout.AddWidget(w.hostLabel, 0, 0)
 	layout.AddWidget(w.hostInputField, 0, 0)
 	layout.AddWidget(w.portLabel, 0, 0)
@@ -174,7 +182,18 @@ func (w *MainWindow) initUI() {
 	w.SetCentralWidget(widget)
 }
 
-func (w *MainWindow) hideElements() {
+func (w *MainWindow) firstrun() {
+
+	w.titleLabel.Show()
+	w.hostLabel.Hide()
+	w.portLabel.Hide()
+	w.userLabel.Hide()
+	w.passwordLabel.Hide()
+	w.hostInputField.Hide()
+	w.userInputField.Hide()
+	w.passwordInputField.Hide()
+	w.portInputField.Hide()
+	w.connectButton.Hide()
 	w.sqlLabel.Hide()
 	w.sqlEntry.Hide()
 	w.executeButton.Hide()
@@ -184,10 +203,40 @@ func (w *MainWindow) hideElements() {
 	w.messagesText.Hide()
 	w.exitButton.Hide()
 	w.SetStyleSheet("background-color: light gray")
+	w.SetFixedSize2(700, 400)
+}
+
+func (w *MainWindow) buttonClicked2(checked bool) {
+	w.connecttodbButton.Hide()
+	w.titleLabel.Hide()
+
+	w.hostLabel.Show()
+	w.hostInputField.Show()
+	w.portLabel.Show()
+	w.portInputField.Show()
+	w.userLabel.Show()
+	w.userInputField.Show()
+	w.passwordLabel.Show()
+	w.passwordInputField.Show()
+	w.connectButton.Show()
+	w.errorLabel.Show()
+
 	w.SetFixedSize2(800, 400)
 }
 
 func (w *MainWindow) showElements() {
+
+	w.hostLabel.Hide()
+	w.hostInputField.Hide()
+	w.portLabel.Hide()
+	w.portInputField.Hide()
+	w.userLabel.Hide()
+	w.userInputField.Hide()
+	w.passwordLabel.Hide()
+	w.passwordInputField.Hide()
+	w.connectButton.Hide()
+	w.errorLabel.Hide()
+
 	w.sqlLabel.Show()
 	w.sqlEntry.Show()
 	w.executeButton.Show()
@@ -325,7 +374,16 @@ func (w *MainWindow) exitDatabase(_ bool) {
 		w.db.Close()
 		w.db = nil
 	}
-	w.hideElements()
+
+	w.sqlLabel.Hide()
+	w.sqlEntry.Hide()
+	w.executeButton.Hide()
+	w.resultLabel.Hide()
+	w.resultText.Hide()
+	w.messagesLabel.Hide()
+	w.messagesText.Hide()
+	w.exitButton.Hide()
+
 	w.hostLabel.Show()
 	w.userLabel.Show()
 	w.passwordLabel.Show()
