@@ -17,9 +17,14 @@ func Theme(app *widgets.QApplication) {
             background-color: #3a86ff;
             color: white;
             font-size: 72px; 
-            padding: 40px; 
+            padding: 160px; 
             border: none;
             border-radius: 10px; 
+        }
+        QPushButton#connectButton{
+            background-color: #3a86ff;
+            color: white; 
+            font-size: 36px;
         }
     `)
 }

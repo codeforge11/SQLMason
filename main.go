@@ -113,9 +113,9 @@ func (w *MainWindow) initUI() {
 	w.portInputField.SetFont(gui.NewQFont2("Arial", 16, 1, false))
 	w.portInputField.SetPlaceholderText("3306")
 
+	w.connectButton.SetObjectName("connectButton")
 	w.connectButton = widgets.NewQPushButton2("Connect to database", nil)
 	w.connectButton.ConnectClicked(w.buttonClicked)
-	w.connectButton.SetStyleSheet("background-color: #3a86ff; color: white; font-size: 18px;")
 
 	w.errorLabel = widgets.NewQLabel(nil, 0)
 	w.errorLabel.SetStyleSheet("color: red")
@@ -397,13 +397,13 @@ func (w *MainWindow) exitDatabase(_ bool) {
 }
 
 func main() {
+
 	app := widgets.NewQApplication(len([]string{}), []string{})
+	appdata.Theme(app)
 
 	if core.QCoreApplication_Instance() == nil {
 		log.Fatal("Failed to initialize QCoreApplication")
 	}
-
-	appdata.Theme(app)
 
 	mainWindow := NewMainWindow()
 	mainWindow.Show()
