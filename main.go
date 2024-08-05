@@ -113,9 +113,9 @@ func (w *MainWindow) initUI() {
 	w.portInputField.SetFont(gui.NewQFont2("Arial", 16, 1, false))
 	w.portInputField.SetPlaceholderText("3306")
 
-	w.connectButton.SetObjectName("connectButton")
 	w.connectButton = widgets.NewQPushButton2("Connect to database", nil)
 	w.connectButton.ConnectClicked(w.buttonClicked)
+	w.connectButton.SetObjectName("connectButton")
 
 	w.errorLabel = widgets.NewQLabel(nil, 0)
 	w.errorLabel.SetStyleSheet("color: red")
@@ -221,7 +221,7 @@ func (w *MainWindow) buttonClicked2(checked bool) {
 	w.connectButton.Show()
 	w.errorLabel.Show()
 
-	w.SetFixedSize2(800, 400)
+	w.SetFixedSize2(800, 425)
 }
 
 func (w *MainWindow) showElements() {
@@ -367,6 +367,17 @@ func (w *MainWindow) displayResults(rows *sql.Rows) {
 
 func (w *MainWindow) displayMessage(message string) {
 	w.messagesText.Append(message)
+	w.errorLabel.SetText(message)
+	w.errorLabel.Show()
+	timer := core.NewQTimer(nil)
+	timer.SetSingleShot(true)
+	timer.ConnectTimeout(w.clearErrorLabel)
+	timer.Start(5000)
+}
+
+func (w *MainWindow) clearErrorLabel() {
+	w.errorLabel.SetText("")
+	w.errorLabel.Hide()
 }
 
 func (w *MainWindow) exitDatabase(_ bool) {

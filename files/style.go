@@ -30,54 +30,15 @@ func Theme(app *widgets.QApplication) {
             left: 5px;
         }
 
-       .button-64 {
-            align-items: center;
-            background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
-            border: 0;
-            border-radius: 8px;
-            color: #FFFFFF;
-            display: flex;
-            font-family: Phantomsans, sans-serif;
-            font-size: 20px;
-            justify-content: center;
-            line-height: 1em;
-            max-width: 100%;
-            min-width: 140px;
-            padding: 3px;
-            text-decoration: none;
+        QPushButton#connectButton {
+            background-color: #3a86ff;
+            color: black; 
+            font-size: 18px;
         }
-
-       .button-64:active,
-       .button-64:hover {
-            outline: 0;
-        }
-
-       .button-64 span {
-            background-color: rgb(5, 6, 45);
-            padding: 16px 24px;
-            border-radius: 6px;
-            width: 100%;
-            height: 100%;
-        }
-
-       .button-64:hover span {
-            background: none;
-        }
-
-        @media (min-width: 768px) {
-           .button-54 {
-                padding: 0.25em 0.75em;
-            }
-            QPushButton#connectButton {
-                background-color: #3a86ff;
-                color: white; 
-                font-size: 36px;
-            }
-            QPushButton#executeButton {
-                background-color: #3a86ff; 
-                color: white; 
-                font-size: 14px;
-            }
+        QPushButton#executeButton {
+            background-color: #3a86ff; 
+            color: white; 
+            font-size: 14px;
         }
     `)
 }
