@@ -1,3 +1,3 @@
 package appdata
 
-var Version = "v0.2" // Version of the program
+var Version = "v0.3" // Version of the program

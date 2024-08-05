@@ -85,9 +85,9 @@ func (w *MainWindow) initUI() {
 
 	w.titleLabel.SetObjectName("titleLabel")
 
-	w.connecttodbButton.SetObjectName("connecttodbButton")
-	w.connecttodbButton = widgets.NewQPushButton2("Connect to DB", nil)
+	w.connecttodbButton = widgets.NewQPushButton2("Connect to database", nil)
 	w.connecttodbButton.ConnectClicked(w.buttonClicked2)
+	w.connecttodbButton.SetObjectName("connecttodbButton")
 
 	w.hostLabel = widgets.NewQLabel2("Host:", nil, 0)
 	w.hostLabel.SetAlignment(core.Qt__AlignCenter)
@@ -127,12 +127,12 @@ func (w *MainWindow) initUI() {
 	w.sqlEntry = widgets.NewQTextEdit(nil)
 	w.sqlEntry.SetFont(gui.NewQFont2("Arial", 18, 1, false))
 
-	w.exitButton = widgets.NewQPushButton2("Exit", nil)
+	w.exitButton = widgets.NewQPushButton2("Back", nil)
 	w.exitButton.ConnectClicked(w.exitDatabase)
 
 	w.executeButton = widgets.NewQPushButton2("Execute SQL", nil)
 	w.executeButton.ConnectClicked(w.executeSQL)
-	w.executeButton.SetStyleSheet("background-color: #3a86ff; color: white; font-size: 14px;")
+	w.executeButton.SetObjectName("executeButton")
 
 	w.statusLabel = widgets.NewQLabel(nil, 0)
 	w.statusLabel.SetAlignment(core.Qt__AlignCenter)
