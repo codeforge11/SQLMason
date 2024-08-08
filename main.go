@@ -109,7 +109,9 @@ func (w *MainWindow) initUI() {
 	w.hostInputField.SetPlaceholderText("localhost")
 
 	w.userInputField.SetFont(gui.NewQFont2("Arial", 16, 1, false))
+
 	w.passwordInputField.SetFont(gui.NewQFont2("Arial", 16, 1, false))
+
 	w.portInputField.SetFont(gui.NewQFont2("Arial", 16, 1, false))
 	w.portInputField.SetPlaceholderText("3306")
 
@@ -166,7 +168,6 @@ func (w *MainWindow) initUI() {
 	layout.AddWidget(w.passwordLabel, 0, 0)
 	layout.AddWidget(w.passwordInputField, 0, 0)
 	layout.AddWidget(w.connectButton, 0, 0)
-	layout.AddWidget(w.errorLabel, 0, 0)
 	layout.AddWidget(w.sqlLabel, 0, 0)
 	layout.AddWidget(w.sqlEntry, 0, 0)
 	layout.AddWidget(w.executeButton, 0, 0)
@@ -176,6 +177,7 @@ func (w *MainWindow) initUI() {
 	layout.AddWidget(w.messagesLabel, 0, 0)
 	layout.AddWidget(w.messagesText, 0, 0)
 	layout.AddWidget(w.exitButton, 0, 0)
+	layout.AddWidget(w.errorLabel, 0, 0)
 
 	widget := widgets.NewQWidget(nil, 0)
 	widget.SetLayout(layout)
@@ -410,7 +412,7 @@ func (w *MainWindow) exitDatabase(_ bool) {
 func main() {
 
 	app := widgets.NewQApplication(len([]string{}), []string{})
-	appdata.Theme(app)
+	appdata.Style(app)
 
 	if core.QCoreApplication_Instance() == nil {
 		log.Fatal("Failed to initialize QCoreApplication")

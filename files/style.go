@@ -2,7 +2,7 @@ package appdata
 
 import "github.com/therecipe/qt/widgets"
 
-func Theme(app *widgets.QApplication) {
+func Style(app *widgets.QApplication) {
 	app.SetStyleSheet(`
         QLabel#titleLabel {
             font-size: 24px;
