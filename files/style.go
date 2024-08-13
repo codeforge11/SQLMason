@@ -40,5 +40,8 @@ func Style(app *widgets.QApplication) {
             color: white; 
             font-size: 14px;
         }
+        QLabel#errorLabel{
+            color: red
+        }
     `)
 }

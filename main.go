@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/fatih/color"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
@@ -18,56 +19,65 @@ import (
 type MainWindow struct {
 	*widgets.QMainWindow
 
-	db                 *sql.DB
-	connecttodbButton  *widgets.QPushButton
-	titleLabel         *widgets.QLabel
-	hostLabel          *widgets.QLabel
-	portLabel          *widgets.QLabel
-	userLabel          *widgets.QLabel
-	passwordLabel      *widgets.QLabel
+	db *sql.DB
+
+	titleLabel    *widgets.QLabel
+	hostLabel     *widgets.QLabel
+	portLabel     *widgets.QLabel
+	userLabel     *widgets.QLabel
+	passwordLabel *widgets.QLabel
+	errorLabel    *widgets.QLabel
+	sqlLabel      *widgets.QLabel
+	statusLabel   *widgets.QLabel
+	resultLabel   *widgets.QLabel
+	messagesLabel *widgets.QLabel
+
 	hostInputField     *widgets.QLineEdit
 	userInputField     *widgets.QLineEdit
 	passwordInputField *widgets.QLineEdit
 	portInputField     *widgets.QLineEdit
-	connectButton      *widgets.QPushButton
-	errorLabel         *widgets.QLabel
-	sqlLabel           *widgets.QLabel
-	sqlEntry           *widgets.QTextEdit
-	executeButton      *widgets.QPushButton
-	statusLabel        *widgets.QLabel
-	resultLabel        *widgets.QLabel
-	resultText         *widgets.QTextEdit
-	messagesLabel      *widgets.QLabel
-	messagesText       *widgets.QTextEdit
-	exitButton         *widgets.QPushButton
+
+	sqlEntry     *widgets.QTextEdit
+	resultText   *widgets.QTextEdit
+	messagesText *widgets.QTextEdit
+
+	executeButton     *widgets.QPushButton
+	connectButton     *widgets.QPushButton
+	connecttodbButton *widgets.QPushButton
+	exitButton        *widgets.QPushButton
 }
 
 func NewMainWindow() *MainWindow {
 	window := &MainWindow{
 		QMainWindow: widgets.NewQMainWindow(nil, 0),
-		db:          &sql.DB{},
 
-		connecttodbButton:  widgets.NewQPushButton(nil),
-		titleLabel:         widgets.NewQLabel2(fmt.Sprintf("SQLMason %s", appdata.Version), nil, 0),
-		hostLabel:          widgets.NewQLabel(nil, 0),
-		portLabel:          widgets.NewQLabel(nil, 0),
-		userLabel:          widgets.NewQLabel(nil, 0),
-		passwordLabel:      widgets.NewQLabel(nil, 0),
+		db: &sql.DB{},
+
+		hostLabel:     widgets.NewQLabel(nil, 0),
+		portLabel:     widgets.NewQLabel(nil, 0),
+		userLabel:     widgets.NewQLabel(nil, 0),
+		passwordLabel: widgets.NewQLabel(nil, 0),
+		statusLabel:   widgets.NewQLabel(nil, 0),
+		resultLabel:   widgets.NewQLabel(nil, 0),
+		errorLabel:    widgets.NewQLabel(nil, 0),
+		sqlLabel:      widgets.NewQLabel(nil, 0),
+		messagesLabel: widgets.NewQLabel(nil, 0),
+
+		titleLabel: widgets.NewQLabel2(fmt.Sprintf("SQLMason %s", appdata.Version), nil, 0),
+
 		hostInputField:     widgets.NewQLineEdit(nil),
 		userInputField:     widgets.NewQLineEdit(nil),
 		passwordInputField: widgets.NewQLineEdit(nil),
 		portInputField:     widgets.NewQLineEdit(nil),
-		connectButton:      widgets.NewQPushButton(nil),
-		errorLabel:         widgets.NewQLabel(nil, 0),
-		sqlLabel:           widgets.NewQLabel(nil, 0),
-		sqlEntry:           widgets.NewQTextEdit(nil),
-		executeButton:      widgets.NewQPushButton(nil),
-		statusLabel:        widgets.NewQLabel(nil, 0),
-		resultLabel:        widgets.NewQLabel(nil, 0),
-		resultText:         widgets.NewQTextEdit(nil),
-		messagesLabel:      widgets.NewQLabel(nil, 0),
-		messagesText:       widgets.NewQTextEdit(nil),
-		exitButton:         widgets.NewQPushButton(nil),
+
+		sqlEntry:     widgets.NewQTextEdit(nil),
+		resultText:   widgets.NewQTextEdit(nil),
+		messagesText: widgets.NewQTextEdit(nil),
+
+		connecttodbButton: widgets.NewQPushButton(nil),
+		connectButton:     widgets.NewQPushButton(nil),
+		executeButton:     widgets.NewQPushButton(nil),
+		exitButton:        widgets.NewQPushButton(nil),
 	}
 
 	window.SetWindowTitle(fmt.Sprintf("SQLMason %s", appdata.Version))
@@ -120,7 +130,7 @@ func (w *MainWindow) initUI() {
 	w.connectButton.SetObjectName("connectButton")
 
 	w.errorLabel = widgets.NewQLabel(nil, 0)
-	w.errorLabel.SetStyleSheet("color: red")
+	w.errorLabel.SetObjectName("errorLabel")
 
 	w.sqlLabel = widgets.NewQLabel2("Enter SQL code:", nil, 0)
 	w.sqlLabel.SetAlignment(core.Qt__AlignCenter)
@@ -185,6 +195,8 @@ func (w *MainWindow) initUI() {
 }
 
 func (w *MainWindow) firstrun() {
+
+	color.HiGreen("App is running")
 
 	w.titleLabel.Show()
 	w.hostLabel.Hide()
