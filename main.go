@@ -45,6 +45,7 @@ type MainWindow struct {
 	connectButton     *widgets.QPushButton
 	connecttodbButton *widgets.QPushButton
 	exitButton        *widgets.QPushButton
+	returnButton      *widgets.QPushButton
 }
 
 func NewMainWindow() *MainWindow {
@@ -78,6 +79,7 @@ func NewMainWindow() *MainWindow {
 		connectButton:     widgets.NewQPushButton(nil),
 		executeButton:     widgets.NewQPushButton(nil),
 		exitButton:        widgets.NewQPushButton(nil),
+		returnButton:      widgets.NewQPushButton(nil),
 	}
 
 	window.SetWindowTitle(fmt.Sprintf("SQLMason %s", appdata.Version))
@@ -95,10 +97,6 @@ func (w *MainWindow) initUI() {
 
 	w.titleLabel.SetObjectName("titleLabel")
 
-	w.connecttodbButton = widgets.NewQPushButton2("Connect to database", nil)
-	w.connecttodbButton.ConnectClicked(w.buttonClicked2)
-	w.connecttodbButton.SetObjectName("connecttodbButton")
-
 	w.hostLabel = widgets.NewQLabel2("Host:", nil, 0)
 	w.hostLabel.SetAlignment(core.Qt__AlignCenter)
 	w.hostLabel.SetFont(gui.NewQFont2("Arial", 12, 1, false))
@@ -115,6 +113,25 @@ func (w *MainWindow) initUI() {
 	w.passwordLabel.SetAlignment(core.Qt__AlignCenter)
 	w.passwordLabel.SetFont(gui.NewQFont2("Arial", 12, 1, false))
 
+	w.statusLabel = widgets.NewQLabel(nil, 0)
+	w.statusLabel.SetAlignment(core.Qt__AlignCenter)
+	w.statusLabel.SetFont(gui.NewQFont2("Arial", 16, 1, false))
+
+	w.resultLabel = widgets.NewQLabel2("Results:", nil, 0)
+	w.resultLabel.SetAlignment(core.Qt__AlignCenter)
+	w.resultLabel.SetFont(gui.NewQFont2("Arial", 16, 1, false))
+
+	w.errorLabel = widgets.NewQLabel(nil, 0)
+	w.errorLabel.SetObjectName("errorLabel")
+
+	w.sqlLabel = widgets.NewQLabel2("Enter SQL code:", nil, 0)
+	w.sqlLabel.SetAlignment(core.Qt__AlignCenter)
+	w.sqlLabel.SetFont(gui.NewQFont2("Arial", 16, 1, false))
+
+	w.messagesLabel = widgets.NewQLabel2("Messages:", nil, 0)
+	w.messagesLabel.SetAlignment(core.Qt__AlignCenter)
+	w.messagesLabel.SetFont(gui.NewQFont2("Arial", 16, 1, false))
+
 	w.hostInputField.SetFont(gui.NewQFont2("Arial", 16, 1, false))
 	w.hostInputField.SetPlaceholderText("localhost")
 
@@ -129,16 +146,6 @@ func (w *MainWindow) initUI() {
 	w.connectButton.ConnectClicked(w.buttonClicked)
 	w.connectButton.SetObjectName("connectButton")
 
-	w.errorLabel = widgets.NewQLabel(nil, 0)
-	w.errorLabel.SetObjectName("errorLabel")
-
-	w.sqlLabel = widgets.NewQLabel2("Enter SQL code:", nil, 0)
-	w.sqlLabel.SetAlignment(core.Qt__AlignCenter)
-	w.sqlLabel.SetFont(gui.NewQFont2("Arial", 16, 1, false))
-
-	w.sqlEntry = widgets.NewQTextEdit(nil)
-	w.sqlEntry.SetFont(gui.NewQFont2("Arial", 18, 1, false))
-
 	w.exitButton = widgets.NewQPushButton2("Back", nil)
 	w.exitButton.ConnectClicked(w.exitDatabase)
 
@@ -146,23 +153,22 @@ func (w *MainWindow) initUI() {
 	w.executeButton.ConnectClicked(w.executeSQL)
 	w.executeButton.SetObjectName("executeButton")
 
-	w.statusLabel = widgets.NewQLabel(nil, 0)
-	w.statusLabel.SetAlignment(core.Qt__AlignCenter)
-	w.statusLabel.SetFont(gui.NewQFont2("Arial", 16, 1, false))
+	w.connecttodbButton = widgets.NewQPushButton2("Connect to database", nil)
+	w.connecttodbButton.ConnectClicked(w.buttonClicked2)
+	w.connecttodbButton.SetObjectName("connecttodbButton")
 
-	w.resultLabel = widgets.NewQLabel2("Results:", nil, 0)
-	w.resultLabel.SetAlignment(core.Qt__AlignCenter)
-	w.resultLabel.SetFont(gui.NewQFont2("Arial", 16, 1, false))
+	w.returnButton = widgets.NewQPushButton2("Return", nil)
+	w.returnButton.ConnectClicked(w.returnclicket)
+	w.returnButton.SetObjectName("returnButton")
 
 	w.resultText = widgets.NewQTextEdit(nil)
 	w.resultText.SetReadOnly(true)
 
-	w.messagesLabel = widgets.NewQLabel2("Messages:", nil, 0)
-	w.messagesLabel.SetAlignment(core.Qt__AlignCenter)
-	w.messagesLabel.SetFont(gui.NewQFont2("Arial", 16, 1, false))
-
 	w.messagesText = widgets.NewQTextEdit(nil)
 	w.messagesText.SetReadOnly(true)
+
+	w.sqlEntry = widgets.NewQTextEdit(nil)
+	w.sqlEntry.SetFont(gui.NewQFont2("Arial", 18, 1, false))
 
 	layout := widgets.NewQVBoxLayout()
 	layout.SetSpacing(10)
@@ -177,7 +183,13 @@ func (w *MainWindow) initUI() {
 	layout.AddWidget(w.userInputField, 0, 0)
 	layout.AddWidget(w.passwordLabel, 0, 0)
 	layout.AddWidget(w.passwordInputField, 0, 0)
-	layout.AddWidget(w.connectButton, 0, 0)
+
+	connectLayout := widgets.NewQHBoxLayout()
+	connectLayout.AddWidget(w.connectButton, 0, 0)
+	connectLayout.AddWidget(w.returnButton, 0, 0)
+
+	layout.AddLayout(connectLayout, 0)
+
 	layout.AddWidget(w.sqlLabel, 0, 0)
 	layout.AddWidget(w.sqlEntry, 0, 0)
 	layout.AddWidget(w.executeButton, 0, 0)
@@ -216,6 +228,7 @@ func (w *MainWindow) firstrun() {
 	w.messagesLabel.Hide()
 	w.messagesText.Hide()
 	w.exitButton.Hide()
+	w.returnButton.Hide()
 	w.SetStyleSheet("background-color: light gray")
 	w.SetFixedSize2(700, 400)
 }
@@ -233,9 +246,10 @@ func (w *MainWindow) buttonClicked2(checked bool) {
 	w.passwordLabel.Show()
 	w.passwordInputField.Show()
 	w.connectButton.Show()
+	w.returnButton.Show()
 	w.errorLabel.Show()
 
-	w.SetFixedSize2(800, 425)
+	w.SetFixedSize2(800, 440)
 }
 
 func (w *MainWindow) showElements() {
@@ -419,6 +433,33 @@ func (w *MainWindow) exitDatabase(_ bool) {
 	w.portInputField.Show()
 	w.connectButton.Show()
 	w.SetFixedSize2(800, 400)
+}
+
+func (w *MainWindow) returnclicket(_ bool) {
+
+	w.connecttodbButton.Show()
+	w.titleLabel.Show()
+	w.errorLabel.Hide()
+	w.hostLabel.Hide()
+	w.portLabel.Hide()
+	w.userLabel.Hide()
+	w.passwordLabel.Hide()
+	w.hostInputField.Hide()
+	w.userInputField.Hide()
+	w.passwordInputField.Hide()
+	w.portInputField.Hide()
+	w.connectButton.Hide()
+	w.sqlLabel.Hide()
+	w.sqlEntry.Hide()
+	w.executeButton.Hide()
+	w.resultLabel.Hide()
+	w.resultText.Hide()
+	w.messagesLabel.Hide()
+	w.messagesText.Hide()
+	w.exitButton.Hide()
+	w.returnButton.Hide()
+	w.SetStyleSheet("background-color: light gray")
+	w.SetFixedSize2(700, 400)
 }
 
 func main() {
