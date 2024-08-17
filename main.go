@@ -313,6 +313,7 @@ func (w *MainWindow) buttonClicked(_ bool) {
 		return
 	}
 
+	w.returnButton.Hide()
 	w.hostLabel.Hide()
 	w.userLabel.Hide()
 	w.passwordLabel.Hide()
@@ -405,7 +406,6 @@ func (w *MainWindow) displayMessage(message string) {
 
 func (w *MainWindow) clearErrorLabel() {
 	w.errorLabel.SetText("")
-	w.errorLabel.Hide()
 }
 
 func (w *MainWindow) exitDatabase(_ bool) {
@@ -423,6 +423,7 @@ func (w *MainWindow) exitDatabase(_ bool) {
 	w.messagesText.Hide()
 	w.exitButton.Hide()
 
+	w.returnButton.Show()
 	w.hostLabel.Show()
 	w.userLabel.Show()
 	w.passwordLabel.Show()
@@ -437,8 +438,11 @@ func (w *MainWindow) exitDatabase(_ bool) {
 
 func (w *MainWindow) returnclicket(_ bool) {
 
+	w.errorLabel.SetText("")
+
 	w.connecttodbButton.Show()
 	w.titleLabel.Show()
+
 	w.errorLabel.Hide()
 	w.hostLabel.Hide()
 	w.portLabel.Hide()

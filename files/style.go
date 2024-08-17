@@ -1,8 +1,13 @@
 package appdata
 
-import "github.com/therecipe/qt/widgets"
+import (
+	"github.com/fatih/color"
+	"github.com/therecipe/qt/widgets"
+)
 
 func Style(app *widgets.QApplication) {
+	color.HiGreen("Style file is running")
+
 	app.SetStyleSheet(`
         QLabel#titleLabel {
             font-size: 24px;
@@ -37,8 +42,11 @@ func Style(app *widgets.QApplication) {
         }
         QPushButton#executeButton {
             background-color: #3a86ff; 
-            color: white; 
+            color: black; 
             font-size: 14px;
+        }
+        QPushButton#returnButton{
+            font-size: 18px;
         }
         QLabel#errorLabel{
             color: red
