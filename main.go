@@ -4,7 +4,8 @@ import (
 	appdata "SQLMason/files"
 	"database/sql"
 	"fmt"
-	"log"
+	"os"
+	"runtime"
 	"strconv"
 	"strings"
 
@@ -467,12 +468,15 @@ func (w *MainWindow) returnclicket(_ bool) {
 }
 
 func main() {
+	if runtime.GOOS == "linux" {
+		os.Setenv("QT_QPA_PLATFORM", "xcb") // Sets x11 for linux
+	}
 
 	app := widgets.NewQApplication(len([]string{}), []string{})
 	appdata.Style(app)
 
 	if core.QCoreApplication_Instance() == nil {
-		log.Fatal("Failed to initialize QCoreApplication")
+		color.Red("Failed to initialize QCoreApplication")
 	}
 
 	mainWindow := NewMainWindow()
