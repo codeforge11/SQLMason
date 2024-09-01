@@ -37,7 +37,6 @@ func Style(app *widgets.QApplication) {
 
         QPushButton#connectButton {
             background-color: #3a86ff;
-            color: black; 
             font-size: 18px;
         }
         QPushButton#executeButton {

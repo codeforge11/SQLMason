@@ -85,7 +85,7 @@ func NewMainWindow() *MainWindow {
 
 	window.SetWindowTitle(fmt.Sprintf("SQLMason %s", appdata.Version))
 	window.SetGeometry(core.NewQRect4(0, 0, 800, 800))
-	window.SetWindowIcon(gui.NewQIcon5("Images/Logo.svg"))
+	window.SetWindowIcon(gui.NewQIcon5("source/Images/Logo.svg"))
 	window.SetFixedSize2(800, 800)
 
 	window.initUI()
@@ -468,6 +468,7 @@ func (w *MainWindow) returnclicket(_ bool) {
 }
 
 func main() {
+
 	if runtime.GOOS == "linux" {
 		os.Setenv("QT_QPA_PLATFORM", "xcb") // Sets x11 for linux
 	}
