@@ -100,47 +100,47 @@ func (w *MainWindow) initUI() {
 
 	w.hostLabel = widgets.NewQLabel2("Host:", nil, 0)
 	w.hostLabel.SetAlignment(core.Qt__AlignCenter)
-	w.hostLabel.SetFont(gui.NewQFont2("Arial", 12, 1, false))
+	w.hostLabel.SetFont(gui.NewQFont2("Inter", 12, 1, false))
 
 	w.portLabel = widgets.NewQLabel2("Port:", nil, 0)
 	w.portLabel.SetAlignment(core.Qt__AlignCenter)
-	w.portLabel.SetFont(gui.NewQFont2("Arial", 12, 1, false))
+	w.portLabel.SetFont(gui.NewQFont2("Inter", 12, 1, false))
 
 	w.userLabel = widgets.NewQLabel2("User:", nil, 0)
 	w.userLabel.SetAlignment(core.Qt__AlignCenter)
-	w.userLabel.SetFont(gui.NewQFont2("Arial", 12, 1, false))
+	w.userLabel.SetFont(gui.NewQFont2("Inter", 12, 1, false))
 
 	w.passwordLabel = widgets.NewQLabel2("Password:", nil, 0)
 	w.passwordLabel.SetAlignment(core.Qt__AlignCenter)
-	w.passwordLabel.SetFont(gui.NewQFont2("Arial", 12, 1, false))
+	w.passwordLabel.SetFont(gui.NewQFont2("Inter", 12, 1, false))
 
 	w.statusLabel = widgets.NewQLabel(nil, 0)
 	w.statusLabel.SetAlignment(core.Qt__AlignCenter)
-	w.statusLabel.SetFont(gui.NewQFont2("Arial", 16, 1, false))
+	w.statusLabel.SetFont(gui.NewQFont2("Inter", 16, 1, false))
 
 	w.resultLabel = widgets.NewQLabel2("Results:", nil, 0)
 	w.resultLabel.SetAlignment(core.Qt__AlignCenter)
-	w.resultLabel.SetFont(gui.NewQFont2("Arial", 16, 1, false))
+	w.resultLabel.SetFont(gui.NewQFont2("Inter", 16, 1, false))
 
 	w.errorLabel = widgets.NewQLabel(nil, 0)
 	w.errorLabel.SetObjectName("errorLabel")
 
 	w.sqlLabel = widgets.NewQLabel2("Enter SQL code:", nil, 0)
 	w.sqlLabel.SetAlignment(core.Qt__AlignCenter)
-	w.sqlLabel.SetFont(gui.NewQFont2("Arial", 16, 1, false))
+	w.sqlLabel.SetFont(gui.NewQFont2("Inter", 18, 1, false))
 
 	w.messagesLabel = widgets.NewQLabel2("Messages:", nil, 0)
 	w.messagesLabel.SetAlignment(core.Qt__AlignCenter)
-	w.messagesLabel.SetFont(gui.NewQFont2("Arial", 16, 1, false))
+	w.messagesLabel.SetFont(gui.NewQFont2("Inter", 16, 1, false))
 
-	w.hostInputField.SetFont(gui.NewQFont2("Arial", 16, 1, false))
+	w.hostInputField.SetFont(gui.NewQFont2("Inter", 16, 1, false))
 	w.hostInputField.SetPlaceholderText("localhost")
 
-	w.userInputField.SetFont(gui.NewQFont2("Arial", 16, 1, false))
+	w.userInputField.SetFont(gui.NewQFont2("Inter", 16, 1, false))
 
-	w.passwordInputField.SetFont(gui.NewQFont2("Arial", 16, 1, false))
+	w.passwordInputField.SetFont(gui.NewQFont2("Inter", 16, 1, false))
 
-	w.portInputField.SetFont(gui.NewQFont2("Arial", 16, 1, false))
+	w.portInputField.SetFont(gui.NewQFont2("Inter", 16, 1, false))
 	w.portInputField.SetPlaceholderText("3306")
 
 	w.connectButton = widgets.NewQPushButton2("Connect to database", nil)
@@ -169,7 +169,7 @@ func (w *MainWindow) initUI() {
 	w.messagesText.SetReadOnly(true)
 
 	w.sqlEntry = widgets.NewQTextEdit(nil)
-	w.sqlEntry.SetFont(gui.NewQFont2("Arial", 18, 1, false))
+	w.sqlEntry.SetFont(gui.NewQFont2("Inter", 18, 1, false))
 
 	layout := widgets.NewQVBoxLayout()
 	layout.SetSpacing(10)
@@ -423,6 +423,7 @@ func (w *MainWindow) exitDatabase(_ bool) {
 	w.messagesLabel.Hide()
 	w.messagesText.Hide()
 	w.exitButton.Hide()
+	w.statusLabel.Hide()
 
 	w.returnButton.Show()
 	w.hostLabel.Show()

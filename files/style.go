@@ -40,9 +40,8 @@ func Style(app *widgets.QApplication) {
             font-size: 18px;
         }
         QPushButton#executeButton {
-            background-color: #3a86ff; 
-            color: black; 
-            font-size: 14px;
+            background-color: #3a86ff;  
+            font-size: 16px;
         }
         QPushButton#returnButton{
             font-size: 18px;
