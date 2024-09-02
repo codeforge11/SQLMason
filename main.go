@@ -64,8 +64,7 @@ func NewMainWindow() *MainWindow {
 		errorLabel:    widgets.NewQLabel(nil, 0),
 		sqlLabel:      widgets.NewQLabel(nil, 0),
 		messagesLabel: widgets.NewQLabel(nil, 0),
-
-		titleLabel: widgets.NewQLabel2(fmt.Sprintf("SQLMason %s", appdata.Version), nil, 0),
+		titleLabel:    widgets.NewQLabel(nil, 0),
 
 		hostInputField:     widgets.NewQLineEdit(nil),
 		userInputField:     widgets.NewQLineEdit(nil),
@@ -84,9 +83,13 @@ func NewMainWindow() *MainWindow {
 	}
 
 	window.SetWindowTitle(fmt.Sprintf("SQLMason %s", appdata.Version))
-	window.SetGeometry(core.NewQRect4(0, 0, 800, 800))
-	window.SetWindowIcon(gui.NewQIcon5("source/Images/Logo.svg"))
+	window.SetGeometry(core.NewQRect4(0, 30, 800, 800))
+	window.SetWindowIcon(gui.NewQIcon5("source/Images/Logo1.svg"))
 	window.SetFixedSize2(800, 800)
+
+	pixmap := gui.NewQPixmap3("source/Images/Logo2.svg", "", core.Qt__AutoColor)
+	pixmap = pixmap.Scaled2(300, 200, core.Qt__KeepAspectRatio, core.Qt__SmoothTransformation)
+	window.titleLabel.SetPixmap(pixmap)
 
 	window.initUI()
 	window.firstrun()
@@ -100,19 +103,19 @@ func (w *MainWindow) initUI() {
 
 	w.hostLabel = widgets.NewQLabel2("Host:", nil, 0)
 	w.hostLabel.SetAlignment(core.Qt__AlignCenter)
-	w.hostLabel.SetFont(gui.NewQFont2("Inter", 12, 1, false))
+	w.hostLabel.SetFont(gui.NewQFont2("Inter", 16, 1, false))
 
 	w.portLabel = widgets.NewQLabel2("Port:", nil, 0)
 	w.portLabel.SetAlignment(core.Qt__AlignCenter)
-	w.portLabel.SetFont(gui.NewQFont2("Inter", 12, 1, false))
+	w.portLabel.SetFont(gui.NewQFont2("Inter", 16, 1, false))
 
 	w.userLabel = widgets.NewQLabel2("User:", nil, 0)
 	w.userLabel.SetAlignment(core.Qt__AlignCenter)
-	w.userLabel.SetFont(gui.NewQFont2("Inter", 12, 1, false))
+	w.userLabel.SetFont(gui.NewQFont2("Inter", 16, 1, false))
 
 	w.passwordLabel = widgets.NewQLabel2("Password:", nil, 0)
 	w.passwordLabel.SetAlignment(core.Qt__AlignCenter)
-	w.passwordLabel.SetFont(gui.NewQFont2("Inter", 12, 1, false))
+	w.passwordLabel.SetFont(gui.NewQFont2("Inter", 16, 1, false))
 
 	w.statusLabel = widgets.NewQLabel(nil, 0)
 	w.statusLabel.SetAlignment(core.Qt__AlignCenter)
@@ -120,7 +123,7 @@ func (w *MainWindow) initUI() {
 
 	w.resultLabel = widgets.NewQLabel2("Results:", nil, 0)
 	w.resultLabel.SetAlignment(core.Qt__AlignCenter)
-	w.resultLabel.SetFont(gui.NewQFont2("Inter", 16, 1, false))
+	w.resultLabel.SetFont(gui.NewQFont2("Inter", 18, 1, false))
 
 	w.errorLabel = widgets.NewQLabel(nil, 0)
 	w.errorLabel.SetObjectName("errorLabel")
@@ -131,7 +134,7 @@ func (w *MainWindow) initUI() {
 
 	w.messagesLabel = widgets.NewQLabel2("Messages:", nil, 0)
 	w.messagesLabel.SetAlignment(core.Qt__AlignCenter)
-	w.messagesLabel.SetFont(gui.NewQFont2("Inter", 16, 1, false))
+	w.messagesLabel.SetFont(gui.NewQFont2("Inter", 18, 1, false))
 
 	w.hostInputField.SetFont(gui.NewQFont2("Inter", 16, 1, false))
 	w.hostInputField.SetPlaceholderText("localhost")
