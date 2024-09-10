@@ -31,6 +31,7 @@ type MainWindow struct {
 	statusLabel   *widgets.QLabel
 	resultLabel   *widgets.QLabel
 	messagesLabel *widgets.QLabel
+	versionLabel  *widgets.QLabel
 
 	hostInputField     *widgets.QLineEdit
 	userInputField     *widgets.QLineEdit
@@ -64,6 +65,7 @@ func newMainWindow() *MainWindow {
 		sqlLabel:      widgets.NewQLabel(nil, 0),
 		messagesLabel: widgets.NewQLabel(nil, 0),
 		titleLabel:    widgets.NewQLabel(nil, 0),
+		versionLabel:  widgets.NewQLabel(nil, 0),
 
 		hostInputField:     widgets.NewQLineEdit(nil),
 		userInputField:     widgets.NewQLineEdit(nil),
@@ -127,6 +129,8 @@ func (w *MainWindow) initUI() {
 	w.messagesLabel = widgets.NewQLabel2("Messages:", nil, 0)
 	w.messagesLabel.SetAlignment(core.Qt__AlignCenter)
 
+	w.versionLabel = widgets.NewQLabel2(Version, nil, 0)
+
 	w.hostInputField.SetPlaceholderText("localhost")
 
 	w.portInputField.SetPlaceholderText("3306")
@@ -184,6 +188,7 @@ func (w *MainWindow) initUI() {
 	layout.AddWidget(w.executeButton, 0, 0)
 	layout.AddWidget(w.statusLabel, 0, 0)
 	layout.AddWidget(w.resultLabel, 0, 0)
+	layout.AddWidget(w.versionLabel, 0, core.Qt__AlignRight|core.Qt__AlignBottom)
 	layout.AddWidget(w.resultText, 0, 0)
 	layout.AddWidget(w.messagesLabel, 0, 0)
 	layout.AddWidget(w.messagesText, 0, 0)
@@ -199,11 +204,14 @@ func (w *MainWindow) firstRun() {
 
 	color.HiGreen("App is running")
 
+	w.versionLabel.Show()
 	w.titleLabel.Show()
+
 	w.hostLabel.Hide()
 	w.portLabel.Hide()
 	w.userLabel.Hide()
 	w.passwordLabel.Hide()
+	w.errorLabel.Hide()
 	w.hostInputField.Hide()
 	w.userInputField.Hide()
 	w.passwordInputField.Hide()
@@ -224,6 +232,7 @@ func (w *MainWindow) firstRun() {
 func (w *MainWindow) buttonClicked2(checked bool) {
 	w.connecttodbButton.Hide()
 	w.titleLabel.Hide()
+	w.versionLabel.Hide()
 
 	w.hostLabel.Show()
 	w.hostInputField.Show()
@@ -428,6 +437,7 @@ func (w *MainWindow) returnClicked(_ bool) {
 
 	w.connecttodbButton.Show()
 	w.titleLabel.Show()
+	w.versionLabel.Show()
 
 	w.errorLabel.Hide()
 	w.hostLabel.Hide()
