@@ -1,6 +1,6 @@
 <br>
 <div align="center">
-    <img src="https://raw.githubusercontent.com/codeforge11/SQLMason/master/source/Images/Logo2.svg" alt="SQLMason" width="400" />
+    <img src="https://raw.githubusercontent.com/codeforge11/SQLMason/master/src/public/logotype.svg" alt="SQLMason" width="400" />
 </div>
 </br>
 
