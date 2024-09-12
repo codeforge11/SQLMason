@@ -3,8 +3,6 @@ package app
 import (
 	"database/sql"
 	"fmt"
-	"os"
-	"runtime"
 	"strconv"
 	"strings"
 
@@ -465,9 +463,9 @@ func (w *MainWindow) returnClicked(_ bool) {
 
 func Main() {
 
-	if runtime.GOOS == "linux" {
-		os.Setenv("QT_QPA_PLATFORM", "xcb") // Sets x11 for linux
-	}
+	// if runtime.GOOS == "linux" {
+	// 	os.Setenv("QT_QPA_PLATFORM", "xcb") // Sets x11 for linux
+	// }
 
 	app := widgets.NewQApplication(len([]string{}), []string{})
 
