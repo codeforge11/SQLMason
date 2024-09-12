@@ -134,6 +134,8 @@ func (w *MainWindow) initUI() {
 	w.hostInputField.SetPlaceholderText("localhost")
 
 	w.portInputField.SetPlaceholderText("3306")
+	portValidator := gui.NewQIntValidator(nil)
+	w.portInputField.SetValidator(portValidator)
 
 	w.passwordInputField.SetEchoMode(widgets.QLineEdit__PasswordEchoOnEdit)
 
