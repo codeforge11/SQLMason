@@ -249,18 +249,19 @@ func (w *MainWindow) buttonClicked2(checked bool) {
 	w.SetFixedSize2(800, 440)
 }
 
-func (w *MainWindow) showElements() {
+func (w *MainWindow) showElementsafterConnect() {
 
 	w.hostLabel.Hide()
-	w.hostInputField.Hide()
-	w.portLabel.Hide()
-	w.portInputField.Hide()
-	w.userLabel.Hide()
-	w.userInputField.Hide()
-	w.passwordLabel.Hide()
-	w.passwordInputField.Hide()
-	w.connectButton.Hide()
 	w.errorLabel.Hide()
+	w.returnButton.Hide()
+	w.userLabel.Hide()
+	w.passwordLabel.Hide()
+	w.portLabel.Hide()
+	w.hostInputField.Hide()
+	w.userInputField.Hide()
+	w.passwordInputField.Hide()
+	w.portInputField.Hide()
+	w.connectButton.Hide()
 
 	w.sqlLabel.Show()
 	w.sqlEntry.Show()
@@ -270,6 +271,8 @@ func (w *MainWindow) showElements() {
 	w.messagesLabel.Show()
 	w.messagesText.Show()
 	w.exitButton.Show()
+
+	w.messagesText.Clear()
 	w.SetFixedSize2(800, 800)
 }
 
@@ -310,20 +313,7 @@ func (w *MainWindow) buttonClicked(_ bool) {
 		return
 	}
 
-	w.returnButton.Hide()
-	w.hostLabel.Hide()
-	w.userLabel.Hide()
-	w.passwordLabel.Hide()
-	w.portLabel.Hide()
-	w.hostInputField.Hide()
-	w.userInputField.Hide()
-	w.passwordInputField.Hide()
-	w.portInputField.Hide()
-	w.connectButton.Hide()
-	w.errorLabel.Hide()
-	w.messagesText.Clear()
-
-	w.showElements()
+	w.showElementsafterConnect()
 }
 
 func (w *MainWindow) executeSQL(_ bool) {
