@@ -45,6 +45,7 @@ type MainWindow struct {
 	connecttodbButton *widgets.QPushButton
 	exitButton        *widgets.QPushButton
 	returnButton      *widgets.QPushButton
+	exitAppButton     *widgets.QPushButton
 }
 
 func newMainWindow() *MainWindow {
@@ -79,6 +80,7 @@ func newMainWindow() *MainWindow {
 		executeButton:     widgets.NewQPushButton(nil),
 		exitButton:        widgets.NewQPushButton(nil),
 		returnButton:      widgets.NewQPushButton(nil),
+		exitAppButton:     widgets.NewQPushButton(nil),
 	}
 
 	window.SetWindowTitle("SQLMason")
@@ -113,6 +115,7 @@ func (w *MainWindow) initUI() {
 
 	w.statusLabel = widgets.NewQLabel(nil, 0)
 	w.statusLabel.SetAlignment(core.Qt__AlignCenter)
+	w.statusLabel.SetStyleSheet("QLabel { color : green; }")
 
 	w.resultLabel = widgets.NewQLabel2("Results:", nil, 0)
 	w.resultLabel.SetAlignment(core.Qt__AlignCenter)
@@ -152,6 +155,9 @@ func (w *MainWindow) initUI() {
 	w.returnButton = widgets.NewQPushButton2("Return", nil)
 	w.returnButton.ConnectClicked(w.returnClicked)
 
+	w.exitAppButton = widgets.NewQPushButton2("Exit", nil)
+	w.exitAppButton.ConnectClicked(w.exitApp)
+
 	w.resultText = widgets.NewQTextEdit(nil)
 	w.resultText.SetReadOnly(true)
 	w.resultText.SetFont(codeFont)
@@ -168,6 +174,7 @@ func (w *MainWindow) initUI() {
 
 	layout.AddWidget(w.titleLabel, 0, core.Qt__AlignTop|core.Qt__AlignCenter)
 	layout.AddWidget(w.connecttodbButton, 0, core.Qt__AlignCenter)
+	layout.AddWidget(w.exitAppButton, 0, core.Qt__AlignCenter)
 	layout.AddWidget(w.hostLabel, 0, 0)
 	layout.AddWidget(w.hostInputField, 0, 0)
 	layout.AddWidget(w.portLabel, 0, 0)
@@ -206,6 +213,7 @@ func (w *MainWindow) firstRun() {
 
 	w.versionLabel.Show()
 	w.titleLabel.Show()
+	w.exitAppButton.Show()
 
 	w.hostLabel.Hide()
 	w.portLabel.Hide()
@@ -233,6 +241,7 @@ func (w *MainWindow) buttonClicked2(checked bool) {
 	w.connecttodbButton.Hide()
 	w.titleLabel.Hide()
 	w.versionLabel.Hide()
+	w.exitAppButton.Hide()
 
 	w.hostLabel.Show()
 	w.hostInputField.Show()
@@ -428,6 +437,7 @@ func (w *MainWindow) returnClicked(_ bool) {
 	w.connecttodbButton.Show()
 	w.titleLabel.Show()
 	w.versionLabel.Show()
+	w.exitAppButton.Show()
 
 	w.errorLabel.Hide()
 	w.hostLabel.Hide()
@@ -451,6 +461,9 @@ func (w *MainWindow) returnClicked(_ bool) {
 	w.SetFixedSize2(700, 400)
 }
 
+func (w *MainWindow) exitApp(_ bool) {
+	w.Close()
+}
 func Main() {
 
 	// if runtime.GOOS == "linux" {
