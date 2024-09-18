@@ -30,6 +30,7 @@ type MainWindow struct {
 	resultLabel   *widgets.QLabel
 	messagesLabel *widgets.QLabel
 	versionLabel  *widgets.QLabel
+	creatorLabel  *widgets.QLabel
 
 	hostInputField     *widgets.QLineEdit
 	userInputField     *widgets.QLineEdit
@@ -65,6 +66,7 @@ func newMainWindow() *MainWindow {
 		messagesLabel: widgets.NewQLabel(nil, 0),
 		titleLabel:    widgets.NewQLabel(nil, 0),
 		versionLabel:  widgets.NewQLabel(nil, 0),
+		creatorLabel:  widgets.NewQLabel(nil, 0),
 
 		hostInputField:     widgets.NewQLineEdit(nil),
 		userInputField:     widgets.NewQLineEdit(nil),
@@ -132,6 +134,8 @@ func (w *MainWindow) initUI() {
 
 	w.versionLabel = widgets.NewQLabel2(Version, nil, 0)
 
+	w.creatorLabel = widgets.NewQLabel2("Created by: @codeforge11", nil, 0)
+
 	w.hostInputField.SetPlaceholderText("localhost")
 
 	w.portInputField.SetPlaceholderText("3306")
@@ -195,12 +199,17 @@ func (w *MainWindow) initUI() {
 	layout.AddWidget(w.executeButton, 0, 0)
 	layout.AddWidget(w.statusLabel, 0, 0)
 	layout.AddWidget(w.resultLabel, 0, 0)
-	layout.AddWidget(w.versionLabel, 0, core.Qt__AlignRight|core.Qt__AlignBottom)
 	layout.AddWidget(w.resultText, 0, 0)
 	layout.AddWidget(w.messagesLabel, 0, 0)
 	layout.AddWidget(w.messagesText, 0, 0)
 	layout.AddWidget(w.exitButton, 0, 0)
 	layout.AddWidget(w.errorLabel, 0, 0)
+
+	creatorandversionlayout := widgets.NewQHBoxLayout()
+	creatorandversionlayout.AddWidget(w.creatorLabel, 0, core.Qt__AlignLeft|core.Qt__AlignBottom)
+	creatorandversionlayout.AddWidget(w.versionLabel, 0, core.Qt__AlignRight|core.Qt__AlignBottom)
+
+	layout.AddLayout(creatorandversionlayout, 0)
 
 	widget := widgets.NewQWidget(nil, 0)
 	widget.SetLayout(layout)
@@ -242,6 +251,7 @@ func (w *MainWindow) buttonClicked2(checked bool) {
 	w.titleLabel.Hide()
 	w.versionLabel.Hide()
 	w.exitAppButton.Hide()
+	w.creatorLabel.Hide()
 
 	w.hostLabel.Show()
 	w.hostInputField.Show()
@@ -438,6 +448,7 @@ func (w *MainWindow) returnClicked(_ bool) {
 	w.titleLabel.Show()
 	w.versionLabel.Show()
 	w.exitAppButton.Show()
+	w.creatorLabel.Show()
 
 	w.errorLabel.Hide()
 	w.hostLabel.Hide()
@@ -464,6 +475,7 @@ func (w *MainWindow) returnClicked(_ bool) {
 func (w *MainWindow) exitApp(_ bool) {
 	w.Close()
 }
+
 func Main() {
 
 	// if runtime.GOOS == "linux" {
