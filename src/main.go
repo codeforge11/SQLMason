@@ -11,7 +11,10 @@ import (
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
 
+	_ "github.com/denisenkom/go-mssqldb"
 	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
+	_ "go.mongodb.org/mongo-driver/mongo"
 )
 
 type MainWindow struct {
@@ -47,6 +50,8 @@ type MainWindow struct {
 	exitButton        *widgets.QPushButton
 	returnButton      *widgets.QPushButton
 	exitAppButton     *widgets.QPushButton
+
+	dbTypeComboBox *widgets.QComboBox
 }
 
 func newMainWindow() *MainWindow {
@@ -92,6 +97,7 @@ func newMainWindow() *MainWindow {
 
 	pixmap := gui.NewQPixmap3("src/public/logotype.svg", "", core.Qt__AutoColor)
 	pixmap = pixmap.Scaled2(300, 200, core.Qt__KeepAspectRatio, core.Qt__SmoothTransformation)
+
 	window.titleLabel.SetPixmap(pixmap)
 
 	window.initUI()
@@ -173,6 +179,9 @@ func (w *MainWindow) initUI() {
 	w.sqlEntry = widgets.NewQTextEdit(nil)
 	w.sqlEntry.SetFont(codeFont)
 
+	w.dbTypeComboBox = widgets.NewQComboBox(nil)
+	w.dbTypeComboBox.AddItems([]string{"MySQL/MariaDB", "PostgreSQL", "MongoDB", "Microsoft SQL Server"})
+
 	layout := widgets.NewQVBoxLayout()
 	layout.SetSpacing(10)
 
@@ -187,6 +196,7 @@ func (w *MainWindow) initUI() {
 	layout.AddWidget(w.userInputField, 0, 0)
 	layout.AddWidget(w.passwordLabel, 0, 0)
 	layout.AddWidget(w.passwordInputField, 0, 0)
+	layout.AddWidget(w.dbTypeComboBox, 0, 0)
 
 	connectLayout := widgets.NewQHBoxLayout()
 	connectLayout.AddWidget(w.connectButton, 0, 0)
@@ -224,6 +234,7 @@ func (w *MainWindow) firstRun() {
 	w.titleLabel.Show()
 	w.exitAppButton.Show()
 
+	w.dbTypeComboBox.Hide()
 	w.hostLabel.Hide()
 	w.portLabel.Hide()
 	w.userLabel.Hide()
@@ -253,6 +264,7 @@ func (w *MainWindow) buttonClicked2(checked bool) {
 	w.exitAppButton.Hide()
 	w.creatorLabel.Hide()
 
+	w.dbTypeComboBox.Show()
 	w.hostLabel.Show()
 	w.hostInputField.Show()
 	w.portLabel.Show()
@@ -270,6 +282,7 @@ func (w *MainWindow) buttonClicked2(checked bool) {
 
 func (w *MainWindow) showElementsafterConnect() {
 
+	w.dbTypeComboBox.Hide()
 	w.hostLabel.Hide()
 	w.errorLabel.Hide()
 	w.returnButton.Hide()
@@ -314,9 +327,29 @@ func (w *MainWindow) buttonClicked(_ bool) {
 		}
 	}
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/", user, password, host, port)
+	dbType := w.dbTypeComboBox.CurrentText()
+	var dsn string
 	var err error
-	w.db, err = sql.Open("mysql", dsn)
+
+	switch dbType {
+	case "MySQL/MariaDB":
+		dsn = fmt.Sprintf("%s:%s@tcp(%s:%d)/", user, password, host, port)
+		w.db, err = sql.Open("mysql", dsn)
+	case "PostgreSQL":
+		dsn = fmt.Sprintf("postgres://%s:%s@%s:%d/?sslmode=disable", user, password, host, port)
+		w.db, err = sql.Open("postgres", dsn)
+	case "MongoDB":
+		uri := fmt.Sprintf("mongodb://%s:%s@%s:%d", user, password, host, port)
+		w.db, err = sql.Open("mongo", uri)
+
+	case "Microsoft SQL Server":
+		dsn = fmt.Sprintf("sqlserver://%s:%s@%s:%d", user, password, host, port)
+		w.db, err = sql.Open("sqlserver", dsn)
+	default:
+		w.displayMessage("Unsupported database selected")
+		return
+	}
+
 	if err != nil {
 		w.displayMessage(fmt.Sprintf("Connection error: %s", err))
 		w.errorLabel.SetText(err.Error())
@@ -417,6 +450,8 @@ func (w *MainWindow) exitDatabase(_ bool) {
 		w.db = nil
 	}
 
+	w.errorLabel.SetText("")
+
 	w.sqlLabel.Hide()
 	w.sqlEntry.Hide()
 	w.executeButton.Hide()
@@ -427,6 +462,7 @@ func (w *MainWindow) exitDatabase(_ bool) {
 	w.exitButton.Hide()
 	w.statusLabel.Hide()
 
+	w.dbTypeComboBox.Show()
 	w.returnButton.Show()
 	w.hostLabel.Show()
 	w.userLabel.Show()
@@ -450,6 +486,7 @@ func (w *MainWindow) returnClicked(_ bool) {
 	w.exitAppButton.Show()
 	w.creatorLabel.Show()
 
+	w.dbTypeComboBox.Hide()
 	w.errorLabel.Hide()
 	w.hostLabel.Hide()
 	w.portLabel.Hide()

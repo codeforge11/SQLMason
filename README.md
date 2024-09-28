@@ -13,8 +13,8 @@ SQLMason is a desktop application that allows you to easily manage databases.
 | OS      | Status |
 | ------- | :----: |
 | Windows |   ✅   |
-| macOS   |   🚧   |
-| Linux   |   🚧   |
+| macOS   |   ❌   |
+| Linux   |   ✅   |
 
 ## Installation
 
@@ -26,11 +26,11 @@ SQLMason can be installed from [GitHub Releases](https://github.com/codeforge11/
 | -------------------- | :----: |
 | MySQL                |   ✅   |
 | MariaDB              |   ✅   |
-| Microsoft SQL Server |   🚧   |
-| Oracle Database      |   🚧   |
-| PostgreSQL           |   🚧   |
-| MongoDB              |   🚧   |
-| SQLite               |   🚧   |
+| PostgreSQL           |   ✅   |
+| Microsoft SQL Server |   ✅   |
+| MongoDB              |   ✅   |
+| Oracle Database      |   ❌   |
+| SQLite               |   ❌   |
 
 <br>
 
