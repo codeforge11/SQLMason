@@ -14,7 +14,6 @@ import (
 	_ "github.com/denisenkom/go-mssqldb"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
-	_ "go.mongodb.org/mongo-driver/mongo"
 )
 
 type MainWindow struct {
@@ -180,7 +179,7 @@ func (w *MainWindow) initUI() {
 	w.sqlEntry.SetFont(codeFont)
 
 	w.dbTypeComboBox = widgets.NewQComboBox(nil)
-	w.dbTypeComboBox.AddItems([]string{"MySQL/MariaDB", "PostgreSQL", "MongoDB", "Microsoft SQL Server"})
+	w.dbTypeComboBox.AddItems([]string{"MySQL/MariaDB", "PostgreSQL", "Microsoft SQL Server"})
 
 	layout := widgets.NewQVBoxLayout()
 	layout.SetSpacing(10)
@@ -308,7 +307,7 @@ func (w *MainWindow) showElementsafterConnect() {
 	w.SetFixedSize2(800, 800)
 }
 
-func (w *MainWindow) buttonClicked(_ bool) {
+func (w *MainWindow) buttonClicked(_ bool) { //connect to db
 	host := w.hostInputField.Text()
 	if host == "" {
 		host = "127.0.0.1"
@@ -338,10 +337,6 @@ func (w *MainWindow) buttonClicked(_ bool) {
 	case "PostgreSQL":
 		dsn = fmt.Sprintf("postgres://%s:%s@%s:%d/?sslmode=disable", user, password, host, port)
 		w.db, err = sql.Open("postgres", dsn)
-	case "MongoDB":
-		uri := fmt.Sprintf("mongodb://%s:%s@%s:%d", user, password, host, port)
-		w.db, err = sql.Open("mongo", uri)
-
 	case "Microsoft SQL Server":
 		dsn = fmt.Sprintf("sqlserver://%s:%s@%s:%d", user, password, host, port)
 		w.db, err = sql.Open("sqlserver", dsn)
