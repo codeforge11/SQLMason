@@ -28,7 +28,6 @@ SQLMason can be installed from [GitHub Releases](https://github.com/codeforge11/
 | MariaDB              |   ✅   |
 | PostgreSQL           |   ✅   |
 | Microsoft SQL Server |   ✅   |
-| MongoDB              |   ❌   |
 | Oracle Database      |   ❌   |
 | SQLite               |   ❌   |
 

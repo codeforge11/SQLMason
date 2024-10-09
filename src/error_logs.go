@@ -17,7 +17,7 @@ func init() {
 		log.Fatalf("Failed to open error log file: %s", err)
 	}
 
-	logger = log.New(errorLog, "ERROR: ", log.Ldate|log.Ltime)
+	logger = log.New(errorLog, "", log.Ldate|log.Ltime)
 }
 
 func logError(err error) {
