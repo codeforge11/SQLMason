@@ -26,7 +26,6 @@ type MainWindow struct {
 	portLabel     *widgets.QLabel
 	userLabel     *widgets.QLabel
 	passwordLabel *widgets.QLabel
-	errorLabel    *widgets.QLabel
 	sqlLabel      *widgets.QLabel
 	statusLabel   *widgets.QLabel
 	resultLabel   *widgets.QLabel
@@ -39,9 +38,9 @@ type MainWindow struct {
 	passwordInputField *widgets.QLineEdit
 	portInputField     *widgets.QLineEdit
 
-	sqlEntry     *widgets.QTextEdit
-	resultText   *widgets.QTextEdit
-	messagesText *widgets.QTextEdit
+	sqlEntry    *widgets.QTextEdit
+	resultText  *widgets.QTextEdit
+	messageText *widgets.QTextEdit
 
 	executeButton     *widgets.QPushButton
 	connectButton     *widgets.QPushButton
@@ -65,7 +64,6 @@ func newMainWindow() *MainWindow {
 		passwordLabel: widgets.NewQLabel(nil, 0),
 		statusLabel:   widgets.NewQLabel(nil, 0),
 		resultLabel:   widgets.NewQLabel(nil, 0),
-		errorLabel:    widgets.NewQLabel(nil, 0),
 		sqlLabel:      widgets.NewQLabel(nil, 0),
 		messagesLabel: widgets.NewQLabel(nil, 0),
 		titleLabel:    widgets.NewQLabel(nil, 0),
@@ -77,9 +75,9 @@ func newMainWindow() *MainWindow {
 		passwordInputField: widgets.NewQLineEdit(nil),
 		portInputField:     widgets.NewQLineEdit(nil),
 
-		sqlEntry:     widgets.NewQTextEdit(nil),
-		resultText:   widgets.NewQTextEdit(nil),
-		messagesText: widgets.NewQTextEdit(nil),
+		sqlEntry:    widgets.NewQTextEdit(nil),
+		resultText:  widgets.NewQTextEdit(nil),
+		messageText: widgets.NewQTextEdit(nil),
 
 		connecttodbButton: widgets.NewQPushButton(nil),
 		connectButton:     widgets.NewQPushButton(nil),
@@ -127,10 +125,6 @@ func (w *MainWindow) initUI() {
 	w.resultLabel = widgets.NewQLabel2("Results:", nil, 0)
 	w.resultLabel.SetAlignment(core.Qt__AlignCenter)
 
-	w.errorLabel = widgets.NewQLabel(nil, 0)
-	w.errorLabel.SetStyleSheet("QLabel { color : red; }")
-	w.errorLabel.SetFont(codeFont)
-
 	w.sqlLabel = widgets.NewQLabel2("Enter SQL code:", nil, 0)
 	w.sqlLabel.SetAlignment(core.Qt__AlignCenter)
 
@@ -171,9 +165,9 @@ func (w *MainWindow) initUI() {
 	w.resultText.SetReadOnly(true)
 	w.resultText.SetFont(codeFont)
 
-	w.messagesText = widgets.NewQTextEdit(nil)
-	w.messagesText.SetReadOnly(true)
-	w.messagesText.SetFont(codeFont)
+	w.messageText = widgets.NewQTextEdit(nil)
+	w.messageText.SetReadOnly(true)
+	w.messageText.SetFont(codeFont)
 
 	w.sqlEntry = widgets.NewQTextEdit(nil)
 	w.sqlEntry.SetFont(codeFont)
@@ -210,9 +204,8 @@ func (w *MainWindow) initUI() {
 	layout.AddWidget(w.resultLabel, 0, 0)
 	layout.AddWidget(w.resultText, 0, 0)
 	layout.AddWidget(w.messagesLabel, 0, 0)
-	layout.AddWidget(w.messagesText, 0, 0)
+	layout.AddWidget(w.messageText, 0, 0)
 	layout.AddWidget(w.exitButton, 0, 0)
-	layout.AddWidget(w.errorLabel, 0, 0)
 
 	creatorandversionlayout := widgets.NewQHBoxLayout()
 	creatorandversionlayout.AddWidget(w.creatorLabel, 0, core.Qt__AlignLeft|core.Qt__AlignBottom)
@@ -237,7 +230,6 @@ func (w *MainWindow) firstRun() {
 	w.portLabel.Hide()
 	w.userLabel.Hide()
 	w.passwordLabel.Hide()
-	w.errorLabel.Hide()
 	w.hostInputField.Hide()
 	w.userInputField.Hide()
 	w.passwordInputField.Hide()
@@ -249,7 +241,7 @@ func (w *MainWindow) firstRun() {
 	w.resultLabel.Hide()
 	w.resultText.Hide()
 	w.messagesLabel.Hide()
-	w.messagesText.Hide()
+	w.messageText.Hide()
 	w.exitButton.Hide()
 	w.returnButton.Hide()
 	w.SetFixedSize2(700, 400)
@@ -273,7 +265,8 @@ func (w *MainWindow) buttonClicked2(checked bool) {
 	w.passwordInputField.Show()
 	w.connectButton.Show()
 	w.returnButton.Show()
-	w.errorLabel.Show()
+
+	w.messageText.Show()
 
 	w.SetFixedSize2(800, 440)
 }
@@ -281,7 +274,6 @@ func (w *MainWindow) buttonClicked2(checked bool) {
 func (w *MainWindow) showElementsafterConnect() {
 	w.dbTypeComboBox.Hide()
 	w.hostLabel.Hide()
-	w.errorLabel.Hide()
 	w.returnButton.Hide()
 	w.userLabel.Hide()
 	w.passwordLabel.Hide()
@@ -298,10 +290,10 @@ func (w *MainWindow) showElementsafterConnect() {
 	w.resultLabel.Show()
 	w.resultText.Show()
 	w.messagesLabel.Show()
-	w.messagesText.Show()
+	w.messageText.Show()
 	w.exitButton.Show()
 
-	w.messagesText.Clear()
+	w.messageText.Clear()
 	w.SetFixedSize2(800, 800)
 }
 
@@ -345,7 +337,6 @@ func (w *MainWindow) buttonClicked(_ bool) { //connect to db
 
 	if err != nil {
 		w.displayMessage(fmt.Sprintf("Connection error: %s", err))
-		w.errorLabel.SetText(err.Error())
 		logError(err)
 		return
 	}
@@ -353,7 +344,6 @@ func (w *MainWindow) buttonClicked(_ bool) { //connect to db
 	err = w.db.Ping()
 	if err != nil {
 		w.displayMessage(fmt.Sprintf("Connection error: %s", err))
-		w.errorLabel.SetText(err.Error())
 		logError(err)
 		return
 	}
@@ -362,7 +352,7 @@ func (w *MainWindow) buttonClicked(_ bool) { //connect to db
 }
 
 func (w *MainWindow) executeSQL(_ bool) {
-	w.messagesText.Clear()
+	w.messageText.Clear()
 	w.statusLabel.SetText("")
 
 	if w.db != nil {
@@ -424,26 +414,26 @@ func (w *MainWindow) displayResults(rows *sql.Rows) {
 }
 
 func (w *MainWindow) displayMessage(message string) {
-	w.messagesText.Append(message)
-	w.errorLabel.SetText(message)
-	w.errorLabel.Show()
+	w.messageText.Append(message)
+
 	timer := core.NewQTimer(nil)
 	timer.SetSingleShot(true)
-	timer.ConnectTimeout(w.clearErrorLabel)
+	timer.ConnectTimeout(w.clearMessageLabel)
 	timer.Start(5000)
 }
 
-func (w *MainWindow) clearErrorLabel() {
-	w.errorLabel.SetText("")
+func (w *MainWindow) clearMessageLabel() {
+	w.messageText.SetText("")
 }
 
 func (w *MainWindow) exitDatabase(_ bool) {
+
 	if w.db != nil {
 		w.db.Close()
 		w.db = nil
 	}
 
-	w.errorLabel.SetText("")
+	w.messageText.SetText("")
 
 	w.sqlLabel.Hide()
 	w.sqlEntry.Hide()
@@ -451,7 +441,6 @@ func (w *MainWindow) exitDatabase(_ bool) {
 	w.resultLabel.Hide()
 	w.resultText.Hide()
 	w.messagesLabel.Hide()
-	w.messagesText.Hide()
 	w.exitButton.Hide()
 	w.statusLabel.Hide()
 
@@ -471,8 +460,6 @@ func (w *MainWindow) exitDatabase(_ bool) {
 
 func (w *MainWindow) returnClicked(_ bool) {
 
-	w.errorLabel.SetText("")
-
 	w.connecttodbButton.Show()
 	w.titleLabel.Show()
 	w.versionLabel.Show()
@@ -480,7 +467,6 @@ func (w *MainWindow) returnClicked(_ bool) {
 	w.creatorLabel.Show()
 
 	w.dbTypeComboBox.Hide()
-	w.errorLabel.Hide()
 	w.hostLabel.Hide()
 	w.portLabel.Hide()
 	w.userLabel.Hide()
@@ -496,7 +482,7 @@ func (w *MainWindow) returnClicked(_ bool) {
 	w.resultLabel.Hide()
 	w.resultText.Hide()
 	w.messagesLabel.Hide()
-	w.messagesText.Hide()
+	w.messageText.Hide()
 	w.exitButton.Hide()
 	w.returnButton.Hide()
 	w.SetFixedSize2(700, 400)
