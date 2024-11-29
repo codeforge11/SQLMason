@@ -106,7 +106,7 @@ func newMainWindow() *MainWindow {
 }
 
 func (w *MainWindow) initUI() {
-	var codeFont = gui.QFontDatabase_SystemFont(gui.QFontDatabase__FixedFont)
+	codeFont := gui.QFontDatabase_SystemFont(gui.QFontDatabase__FixedFont)
 
 	w.hostLabel = widgets.NewQLabel2("Host:", nil, 0)
 	w.hostLabel.SetAlignment(core.Qt__AlignCenter)
@@ -226,7 +226,6 @@ func (w *MainWindow) initUI() {
 }
 
 func (w *MainWindow) firstRun() {
-
 	color.HiGreen("App is running")
 
 	w.versionLabel.Show()
@@ -280,7 +279,6 @@ func (w *MainWindow) buttonClicked2(checked bool) {
 }
 
 func (w *MainWindow) showElementsafterConnect() {
-
 	w.dbTypeComboBox.Hide()
 	w.hostLabel.Hide()
 	w.errorLabel.Hide()
@@ -510,10 +508,6 @@ func (w *MainWindow) exitApp(_ bool) {
 
 func Main() {
 
-	// if runtime.GOOS == "linux" {
-	// 	os.Setenv("QT_QPA_PLATFORM", "xcb") // Sets x11 for linux
-	// }
-
 	app := widgets.NewQApplication(len([]string{}), []string{})
 
 	if core.QCoreApplication_Instance() == nil {
@@ -523,5 +517,4 @@ func Main() {
 	mainWindow := newMainWindow()
 	mainWindow.Show()
 	app.Exec()
-
 }
