@@ -356,19 +356,24 @@ func (w *MainWindow) executeSQL(_ bool) {
 	w.statusLabel.SetText("")
 
 	if w.db != nil {
-		sqlCode := w.sqlEntry.ToPlainText()
-		go func() {
-			rows, err := w.db.Query(sqlCode)
+		sqlCode := strings.TrimSpace(w.sqlEntry.ToPlainText())
+		queries := strings.Split(sqlCode, ";")
+		for _, query := range queries {
+			query = strings.TrimSpace(query)
+			if query == "" {
+				continue
+			}
+			rows, err := w.db.Query(query)
 			if err != nil {
 				w.displayMessage(fmt.Sprintf("SQL execution error: %s", err))
 				logError(err)
-				return
+				continue
 			}
 			defer rows.Close()
 
 			w.displayResults(rows)
-			w.statusLabel.SetText("SQL executed successfully")
-		}()
+		}
+		w.statusLabel.SetText("SQL executed successfully")
 	} else {
 		w.statusLabel.SetText("Not connected to the database")
 	}
@@ -409,7 +414,8 @@ func (w *MainWindow) displayResults(rows *sql.Rows) {
 			}
 		}
 		w.resultText.Append(strings.Join(rowData, " | "))
-		w.resultText.Append(strings.Repeat("-", 40))
+
+		w.resultText.Append(strings.Repeat("-", (len(columns) * 20)))
 	}
 }
 
