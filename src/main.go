@@ -380,6 +380,9 @@ func (w *MainWindow) executeSQL(_ bool) {
 }
 
 func (w *MainWindow) displayResults(rows *sql.Rows) {
+
+	w.clearResultsLabel()
+
 	w.resultText.Clear()
 
 	columns, err := rows.Columns()
@@ -430,6 +433,10 @@ func (w *MainWindow) displayMessage(message string) {
 
 func (w *MainWindow) clearMessageLabel() {
 	w.messageText.SetText("")
+}
+
+func (w *MainWindow) clearResultsLabel() {
+	w.resultText.SetText("")
 }
 
 func (w *MainWindow) exitDatabase(_ bool) {
