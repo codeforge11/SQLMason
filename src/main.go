@@ -428,7 +428,7 @@ func (w *MainWindow) displayMessage(message string) {
 	timer := core.NewQTimer(nil)
 	timer.SetSingleShot(true)
 	timer.ConnectTimeout(w.clearMessageLabel)
-	timer.Start(5000)
+	timer.Start(10000)
 }
 
 func (w *MainWindow) clearMessageLabel() {
