@@ -1,3 +1,3 @@
 package app
 
-var Version = "v0.5" // Version of the program
+var Version = "v0.6" // Version of the program
