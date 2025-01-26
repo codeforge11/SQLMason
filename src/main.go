@@ -98,7 +98,7 @@ func newMainWindow() *MainWindow {
 	window.titleLabel.SetPixmap(pixmap)
 
 	window.initUI()
-	window.firstRun()
+	window.appOpen()
 
 	return window
 }
@@ -150,7 +150,7 @@ func (w *MainWindow) initUI() {
 	w.exitButton.ConnectClicked(w.exitDatabase)
 
 	w.executeButton = widgets.NewQPushButton2("Execute SQL", nil)
-	w.executeButton.ConnectClicked(w.executeSQL)
+	w.executeButton.ConnectClicked(w.execute)
 
 	w.connecttodbButton = widgets.NewQPushButton2("Connect to database", nil)
 	w.connecttodbButton.ConnectClicked(w.buttonClicked2)
@@ -159,7 +159,7 @@ func (w *MainWindow) initUI() {
 	w.returnButton.ConnectClicked(w.returnClicked)
 
 	w.exitAppButton = widgets.NewQPushButton2("Exit", nil)
-	w.exitAppButton.ConnectClicked(w.exitApp)
+	w.exitAppButton.ConnectClicked(w.exit)
 
 	w.resultText = widgets.NewQTextEdit(nil)
 	w.resultText.SetReadOnly(true)
@@ -218,7 +218,7 @@ func (w *MainWindow) initUI() {
 	w.SetCentralWidget(widget)
 }
 
-func (w *MainWindow) firstRun() {
+func (w *MainWindow) appOpen() {
 	color.HiGreen("App is running")
 
 	w.versionLabel.Show()
@@ -351,7 +351,7 @@ func (w *MainWindow) buttonClicked(_ bool) { //connect to db
 	w.showElementsafterConnect()
 }
 
-func (w *MainWindow) executeSQL(_ bool) {
+func (w *MainWindow) execute(_ bool) {
 	w.messageText.Clear()
 	w.statusLabel.SetText("")
 
@@ -501,7 +501,7 @@ func (w *MainWindow) returnClicked(_ bool) {
 	w.SetFixedSize2(700, 400)
 }
 
-func (w *MainWindow) exitApp(_ bool) {
+func (w *MainWindow) exit(_ bool) {
 	w.Close()
 }
 
