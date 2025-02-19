@@ -271,7 +271,7 @@ func (w *MainWindow) buttonClicked2(checked bool) {
 	w.SetFixedSize2(800, 440)
 }
 
-func (w *MainWindow) showElementsafterConnect() {
+func (w *MainWindow) showElements() {
 	w.dbTypeComboBox.Hide()
 	w.hostLabel.Hide()
 	w.returnButton.Hide()
@@ -348,7 +348,7 @@ func (w *MainWindow) buttonClicked(_ bool) { //connect to db
 		return
 	}
 
-	w.showElementsafterConnect()
+	w.showElements()
 }
 
 func (w *MainWindow) execute(_ bool) {
