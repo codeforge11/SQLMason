@@ -44,7 +44,7 @@ type MainWindow struct {
 
 	executeButton     *widgets.QPushButton
 	connectButton     *widgets.QPushButton
-	connecttodbButton *widgets.QPushButton
+	showDbItemsButton *widgets.QPushButton
 	exitButton        *widgets.QPushButton
 	returnButton      *widgets.QPushButton
 	exitAppButton     *widgets.QPushButton
@@ -79,7 +79,7 @@ func newMainWindow() *MainWindow {
 		resultText:  widgets.NewQTextEdit(nil),
 		messageText: widgets.NewQTextEdit(nil),
 
-		connecttodbButton: widgets.NewQPushButton(nil),
+		showDbItemsButton: widgets.NewQPushButton(nil),
 		connectButton:     widgets.NewQPushButton(nil),
 		executeButton:     widgets.NewQPushButton(nil),
 		exitButton:        widgets.NewQPushButton(nil),
@@ -152,8 +152,8 @@ func (w *MainWindow) initUI() {
 	w.executeButton = widgets.NewQPushButton2("Execute SQL", nil)
 	w.executeButton.ConnectClicked(w.execute)
 
-	w.connecttodbButton = widgets.NewQPushButton2("Connect to database", nil)
-	w.connecttodbButton.ConnectClicked(w.buttonClicked2)
+	w.showDbItemsButton = widgets.NewQPushButton2("Connect to database", nil)
+	w.showDbItemsButton.ConnectClicked(w.buttonClicked2)
 
 	w.returnButton = widgets.NewQPushButton2("Return", nil)
 	w.returnButton.ConnectClicked(w.returnClicked)
@@ -179,7 +179,7 @@ func (w *MainWindow) initUI() {
 	layout.SetSpacing(10)
 
 	layout.AddWidget(w.titleLabel, 0, core.Qt__AlignTop|core.Qt__AlignCenter)
-	layout.AddWidget(w.connecttodbButton, 0, core.Qt__AlignCenter)
+	layout.AddWidget(w.showDbItemsButton, 0, core.Qt__AlignCenter)
 	layout.AddWidget(w.exitAppButton, 0, core.Qt__AlignCenter)
 	layout.AddWidget(w.hostLabel, 0, 0)
 	layout.AddWidget(w.hostInputField, 0, 0)
@@ -248,7 +248,7 @@ func (w *MainWindow) appOpen() {
 }
 
 func (w *MainWindow) buttonClicked2(checked bool) {
-	w.connecttodbButton.Hide()
+	w.showDbItemsButton.Hide()
 	w.titleLabel.Hide()
 	w.versionLabel.Hide()
 	w.exitAppButton.Hide()
@@ -473,7 +473,7 @@ func (w *MainWindow) exitDatabase(_ bool) {
 
 func (w *MainWindow) returnClicked(_ bool) {
 
-	w.connecttodbButton.Show()
+	w.showDbItemsButton.Show()
 	w.titleLabel.Show()
 	w.versionLabel.Show()
 	w.exitAppButton.Show()
