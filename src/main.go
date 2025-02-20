@@ -306,6 +306,7 @@ func (w *MainWindow) buttonClicked(_ bool) { //connect to db
 	password := w.passwordInputField.Text()
 	portText := w.portInputField.Text()
 	port := 3306
+
 	if portText != "" {
 		var err error
 		port, err = strconv.Atoi(portText)
