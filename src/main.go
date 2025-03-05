@@ -89,10 +89,10 @@ func newMainWindow() *MainWindow {
 
 	window.SetWindowTitle("SQLMason")
 	window.SetGeometry(core.NewQRect4(0, 30, 800, 800))
-	window.SetWindowIcon(gui.NewQIcon5("src/public/logomark.svg"))
+	window.SetWindowIcon(gui.NewQIcon5("src/public/logomark.png"))
 	window.SetFixedSize2(800, 800)
 
-	pixmap := gui.NewQPixmap3("src/public/logotype.svg", "", core.Qt__AutoColor)
+	pixmap := gui.NewQPixmap3("src/public/logotype.png", "", core.Qt__AutoColor)
 	pixmap = pixmap.Scaled2(300, 200, core.Qt__KeepAspectRatio, core.Qt__SmoothTransformation)
 
 	window.titleLabel.SetPixmap(pixmap)
