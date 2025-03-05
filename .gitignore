@@ -2,3 +2,4 @@ test/
 export/
 qtbox
 error_log.txt
+*.syso
