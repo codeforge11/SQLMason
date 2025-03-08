@@ -1,4 +1,4 @@
-name: CI Go
+name: CI 
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
         go-version: ${{ matrix.go-version }}
 
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Install dependencies
       run: go mod tidy

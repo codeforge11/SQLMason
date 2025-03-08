@@ -1,0 +1,114 @@
+name: Export
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+  packages: write
+  deployments: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.24
+
+      - name: Install dependencies
+        run: go mod tidy
+
+      - name: Install go-winres
+        run: go install github.com/tc-hib/go-winres@latest
+
+      - name: Install zip
+        run: choco install zip -y
+
+      - name: Build for Windows 
+        shell: pwsh
+        run: |
+          Write-Output "Building Windows binary..."
+          $env:GOOS = "windows"
+          $env:GOARCH = "amd64"
+          go-winres simply -i ./src/public/logomark.png
+
+          go build -ldflags="-H windowsgui" -o "SQLMason.exe" main.go
+         
+          New-Item -ItemType Directory -Force -Path "SQLMason-${{ github.ref_name }}-win-x86_64" | Out-Null
+          
+          Copy-Item "SQLMason.exe" "SQLMason-${{ github.ref_name }}-win-x86_64"
+          Copy-Item LICENSE "SQLMason-${{ github.ref_name }}-win-x86_64"
+          Copy-Item -Recurse src/public "SQLMason-${{ github.ref_name }}-win-x86_64/src/public"
+        
+          zip -r "SQLMason-${{ github.ref_name }}-win-x86_64.zip" "SQLMason-${{ github.ref_name }}-win-x86_64"
+
+      - name: Build for Linux
+        shell: pwsh
+        run: |
+            Write-Output "Building Linux binary..."
+            $env:GOOS = "linux"
+            $env:GOARCH = "amd64"
+          
+            $folder = "SQLMason-${{ github.ref_name }}"
+            New-Item -ItemType Directory -Force -Path $folder | Out-Null
+           
+            go build -o "$folder/SQLMason" main.go
+            
+            New-Item -ItemType Directory -Force -Path "$folder/src" | Out-Null
+            Copy-Item LICENSE $folder
+            Copy-Item -Recurse src/public "$folder/src"
+            
+            zip -r "SQLMason-${{ github.ref_name }}-linux-x86_64.zip" $folder
+
+      - name: Prepare release assets
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path release | Out-Null
+          Copy-Item "SQLMason-${{ github.ref_name }}-win-x86_64.zip" release/
+          Copy-Item "SQLMason-${{ github.ref_name }}-linux-x86_64.zip" release/
+          Copy-Item LICENSE release/
+          New-Item -ItemType Directory -Force -Path "release/src/public" | Out-Null
+          Copy-Item -Recurse src/public/* "release/src/public/"
+
+      - name: Create or Update Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.token }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: |
+            Release for version ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Windows Release Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: release/SQLMason-${{ github.ref_name }}-win-x86_64.zip
+          asset_name: SQLMason-${{ github.ref_name }}-win-x86_64.zip
+          asset_content_type: application/zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.token }}
+
+      - name: Upload Linux Release 
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: release/SQLMason-${{ github.ref_name }}-linux-x86_64.zip
+          asset_name: SQLMason-${{ github.ref_name }}-linux-x86_64.zip
+          asset_content_type: application/zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.token }}
