@@ -153,7 +153,7 @@ func (w *MainWindow) initUI() {
 	w.executeButton.ConnectClicked(w.execute)
 
 	w.showDbItemsButton = widgets.NewQPushButton2("Connect to database", nil)
-	w.showDbItemsButton.ConnectClicked(w.buttonClicked2)
+	w.showDbItemsButton.ConnectClicked(w.showDbItems)
 
 	w.returnButton = widgets.NewQPushButton2("Return", nil)
 	w.returnButton.ConnectClicked(w.returnClicked)
@@ -247,7 +247,7 @@ func (w *MainWindow) appOpen() {
 	w.SetFixedSize2(700, 400)
 }
 
-func (w *MainWindow) buttonClicked2(checked bool) {
+func (w *MainWindow) showDbItems(checked bool) {
 	w.showDbItemsButton.Hide()
 	w.titleLabel.Hide()
 	w.versionLabel.Hide()
