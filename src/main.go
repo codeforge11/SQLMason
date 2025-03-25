@@ -115,6 +115,8 @@ func (w *MainWindow) initUI() {
 	w.userLabel = widgets.NewQLabel2("User:", nil, 0)
 	w.userLabel.SetAlignment(core.Qt__AlignCenter)
 
+	w.userInputField.SetPlaceholderText("root")
+
 	w.passwordLabel = widgets.NewQLabel2("Password:", nil, 0)
 	w.passwordLabel.SetAlignment(core.Qt__AlignCenter)
 

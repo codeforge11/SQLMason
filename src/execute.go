@@ -3,6 +3,8 @@ package app
 import (
 	"fmt"
 	"strings"
+
+	"github.com/therecipe/qt/core"
 )
 
 func (w *MainWindow) execute(_ bool) {
@@ -27,8 +29,19 @@ func (w *MainWindow) execute(_ bool) {
 
 			w.displayResults(rows)
 		}
+
 		w.statusLabel.SetText("SQL executed successfully")
+
+		timer := core.NewQTimer(nil)
+		timer.SetSingleShot(true)
+		timer.ConnectTimeout(w.clearStatusLabel)
+		timer.Start(5000)
+
 	} else {
 		w.statusLabel.SetText("Not connected to the database")
 	}
+}
+
+func (w *MainWindow) clearStatusLabel() {
+	w.statusLabel.SetText("")
 }
