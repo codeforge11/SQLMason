@@ -428,6 +428,8 @@ func (w *MainWindow) exitDatabase(_ bool) {
 	}
 
 	w.messageText.SetText("")
+	w.statusLabel.SetText("")
+	w.sqlEntry.Clear()
 
 	w.sqlLabel.Hide()
 	w.sqlEntry.Hide()
