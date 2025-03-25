@@ -300,11 +300,17 @@ func (w *MainWindow) showElements() {
 }
 
 func (w *MainWindow) buttonClicked(_ bool) { //connect to db
+
 	host := w.hostInputField.Text()
+	user := w.userInputField.Text()
+
 	if host == "" {
 		host = "127.0.0.1"
 	}
-	user := w.userInputField.Text()
+	if user == "" {
+		user = "root"
+	}
+
 	password := w.passwordInputField.Text()
 	portText := w.portInputField.Text()
 	port := 3306
