@@ -2,4 +2,6 @@ test/
 export/
 qtbox
 error_log.txt
+.vscode
 *.syso
+*.exe
