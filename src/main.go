@@ -146,7 +146,7 @@ func (w *MainWindow) initUI() {
 	w.passwordInputField.SetEchoMode(widgets.QLineEdit__PasswordEchoOnEdit)
 
 	w.connectButton = widgets.NewQPushButton2("Connect to database", nil)
-	w.connectButton.ConnectClicked(w.buttonClicked)
+	w.connectButton.ConnectClicked(w.connect)
 
 	w.exitButton = widgets.NewQPushButton2("Back", nil)
 	w.exitButton.ConnectClicked(w.exitDatabase)
@@ -299,7 +299,7 @@ func (w *MainWindow) showElements() {
 	w.SetFixedSize2(800, 800)
 }
 
-func (w *MainWindow) buttonClicked(_ bool) { //connect to db
+func (w *MainWindow) connect(_ bool) { //connect to db
 
 	host := w.hostInputField.Text()
 	user := w.userInputField.Text()
