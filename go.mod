@@ -4,7 +4,7 @@ go 1.24.1
 
 require (
 	github.com/fatih/color v1.18.0
-	github.com/go-sql-driver/mysql v1.9.0
+	github.com/go-sql-driver/mysql v1.9.1
 	github.com/therecipe/qt v0.0.0-20200904063919-c0c124a5770d
 )
 
