@@ -490,6 +490,8 @@ func (w *MainWindow) exit(_ bool) {
 
 func Main() {
 
+	checkOStype()
+
 	app := widgets.NewQApplication(len([]string{}), []string{})
 
 	if core.QCoreApplication_Instance() == nil {
